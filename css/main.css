@@ -6,8 +6,8 @@
         var(--tg-theme-button-text-color) */
 
         .icon{
-            height: 1.5 em;
-            width: 1.5 em;
+            height: 1.5rem;
+            width: 1.5rem;
         }
 
         .text-color{
