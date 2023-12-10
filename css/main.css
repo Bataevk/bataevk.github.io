@@ -4,6 +4,12 @@
         var(--tg-theme-link-color)
         var(--tg-theme-button-color)
         var(--tg-theme-button-text-color) */
+
+        .icon{
+            height: 1.5 em;
+            width: 1.5 em;
+        }
+
         .text-color{
             background-color: var(--tg-theme-text-color);
         }

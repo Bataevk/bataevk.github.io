@@ -4,8 +4,10 @@ e_username = document.querySelector(".username");
 e_icon = document.querySelector(".icon");
 
 alert(tg.initDataUnsafe.user.username);
-alert(tg.initDataUnsafe.user.photo_url);
+
 
 e_username.inner_HTML =  tg.initDataUnsafe.user.username;
-e_icon.src = tg.initDataUnsafe.user.photo_url;
+if (typeof tg.initDataUnsafe.user.photo_url != undefined ){
+    e_icon.src = tg.initDataUnsafe.user.photo_url;
+}
 tg.expand();
