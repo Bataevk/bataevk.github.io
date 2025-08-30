@@ -1,9 +1,330 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <meta http-equiv="refresh" content="0;url=https://drive.google.com/drive/folders/1eFhLAFraHPiSOZ5mPtTlw1LTioqdQSoi?usp=sharing">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Илья Батаев | AI Developer</title>
+    <meta name="description" content="Портфолио Ильи Батаева, разработчика и исследователя в области AI. Проекты, навыки и опыт в создании мультиагентных систем и LLM-решений.">
+    
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" xintegrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Light Theme */
+            --bg-color-light: #f5f5f7;
+            --text-color-light: #1d1d1f;
+            --header-color-light: #000000;
+            --primary-color-light: #b30c00; /* Deeper Scarlet */
+            --card-bg-light: #ffffff;
+            --card-border-light: #e8e8ed;
+            --subtle-text-light: #6e6e73;
+            
+            /* Dark Theme */
+            --bg-color-dark: #121212;
+            --text-color-dark: #e0e0e0;
+            --header-color-dark: #ffffff;
+            --primary-color-dark: #ff453a; /* Brighter Scarlet for Dark Mode */
+            --card-bg-dark: #1e1e1e;
+            --card-border-dark: #333333;
+            --subtle-text-dark: #a0a0a0;
+        }
+
+        /* --- Default Light Theme --- */
+        body {
+            --bg-color: var(--bg-color-light);
+            --text-color: var(--text-color-light);
+            --header-color: var(--header-color-light);
+            --primary-color: var(--primary-color-light);
+            --card-bg: var(--card-bg-light);
+            --card-border: var(--card-border-light);
+            --subtle-text: var(--subtle-text-light);
+
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .bg-theme {
+            background-color: var(--bg-color);
+        }
+
+        /* --- Dark Theme via prefers-color-scheme --- */
+        @media (prefers-color-scheme: dark) {
+            .bg-theme {
+                background-color: var(--bg-color-dark);
+            }
+            body {
+                --bg-color: var(--bg-color-dark);
+                --text-color: var(--text-color-dark);
+                --header-color: var(--header-color-dark);
+                --primary-color: var(--primary-color-dark);
+                --card-bg: var(--card-bg-dark);
+                --card-border: var(--card-border-dark);
+                --subtle-text: var(--subtle-text-dark);
+            }
+            ::-webkit-scrollbar { width: 8px; }
+            ::-webkit-scrollbar-track { background: var(--bg-color); }
+            ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+            ::-webkit-scrollbar-thumb:hover { background: #555; }
+        }
+
+        /* --- General & Typography --- */
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; color: var(--header-color); font-weight: 700; }
+        a { color: var(--primary-color); text-decoration: none; transition: all 0.2s ease-in-out; }
+        a:hover { color: var(--header-color); text-decoration: none; }
+        p { line-height: 1.6; }
+        
+        /* --- Layout: Poster Style --- */
+        .poster-layout {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        #poster-header {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        #content-main {
+            padding: 3rem 2rem;
+            padding-left: 0;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 991.98px) {
+            #poster-header {
+                position: static;
+                height: auto;
+                padding-bottom: 1rem;
+            }
+            #content-main, #poster-header {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* --- Left Poster Panel --- */
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--card-border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        #poster-header h1 { font-size: 2.5rem; margin-top: 1.5rem; }
+        #poster-header .lead { color: var(--text-color); font-size: 1.1rem; }
+        #poster-header .bio { color: var(--subtle-text); font-size: 0.95rem; }
+
+        .contact-nav a {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--subtle-text);
+            font-weight: 500;
+        }
+        .contact-nav a:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+        .contact-nav i { width: 24px; text-align: center; margin-right: 10px; }
+
+        /* --- Right Content Panel --- */
+        .content-section h2 { margin-bottom: 2rem; }
+        .content-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.15);
+        }
+        .card-title { color: var(--header-color); font-size: 1.2rem; }
+        .card-meta { color: var(--subtle-text); font-size: 0.85rem; margin-bottom: 1rem; }
+        .card-link { font-weight: 500; font-size: 0.9rem; }
+        .card-link i { margin-left: 5px; }
+
+        /* --- Skill Badges --- */
+        .skills-group { margin-bottom: 1.5rem; }
+        .skills-group h4 { font-size: 0.9rem; color: var(--subtle-text); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; }
+        .skill-badge {
+            display: inline-block;
+            background-color: var(--card-bg);
+            color: var(--primary-color);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            margin: 0.25rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid var(--card-border-light);
+            transition: all 0.2s;
+        }
+        @media (prefers-color-scheme: dark) {
+            .skill-badge { border-color: var(--card-border-dark); }
+        }
+
+        /* --- Animations --- */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* .contact links */
+        
+        .contact-links a {
+            font-size: 1.5rem;
+            margin: 0 1rem;
+            color: var(--subtle-text);
+            transition: color 0.3s, transform 0.3s;
+        }
+        
+        .contact-links a:hover {
+            color: var(--primary-color);
+            transform: scale(1.2);
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
-    <!-- Содержимое страницы -->
+
+<div class="container-fluid">
+    <div class="poster-layout row">
+
+        <!-- ======================= LEFT POSTER PANEL ======================= -->
+        <header id="poster-header" class="col-lg-4 px-5 vh-100">
+            <div class="poster-intro d-flex flex-column align-items-center text-center h-100 justify-content-center">
+                <!-- <img src="./profile.jpg" alt="Фото Ильи Батаева" class="profile-img fade-in-up"> -->
+                <img src="https://avatars.githubusercontent.com/u/106013347?v=4" alt="Фото Ильи Батаева" class="profile-img fade-in-up">
+                <h1 class="mt-4 fade-in-up" style="transition-delay: 100ms;">Батаев Илья</h1>
+                <p class="lead fade-in-up" style="transition-delay: 200ms;">AI & Software Developer</p>
+                <p class="bio fade-in-up" style="transition-delay: 300ms;">
+                    Создаю модульные AI-платформы с фокусом на мультиагентных системах, гибридных базах знаний (Neo4j, ChromaDB) и оптимизации LLM-взаимодействий.
+                </p>
+                <div class="contact-links mt-4">
+                    <a href="https://github.com/Bataevk" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="mailto:bis.21@uni-dubna.ru" title="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="tel:+789997059389" title="Телефон"><i class="fas fa-phone"></i></a>
+                </div>
+            </div>
+        </header>
+
+        <!-- ======================= RIGHT CONTENT PANEL ======================= -->
+        <main id="content-main" class="col-lg-8">
+            
+            <!-- Experience Section -->
+            <section id="experience" class="content-section mb-3 d-flex flex-column">
+                <!-- Прилипающий заголовок -->
+                <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom">
+                    <h2 class="mb-1">Опыт</h2>
+                </div>
+                <div class="content-card fade-in-up" style="transition-delay: 100ms;">
+                    <p class="card-meta">МАРТ – ИЮЛЬ 2024</p>
+                    <h3 class="card-title">Архитектор и ведущий разработчик RAG-системы | TheWall Global</h3>
+                    <p class="mb-0">Разработал архитектуру и вел команду по созданию виртуального ассистента «Ask Handy» на базе RAG с классификатором GLINER. Отвечал за дизайн микросервисов и интеграцию с фронтендом.</p>
+                </div>
+                <div class="content-card fade-in-up" style="transition-delay: 200ms;">
+                    <p class="card-meta">С 2023 ГОДА</p>
+                    <h3 class="card-title">Преподаватель Python | Школа «Алгоритмика»</h3>
+                    <p class="mb-0">Веду курсы по базовому и продвинутому Python. Помогаю школьникам реализовывать проекты по анализу данных и машинному обучению.</p>
+                </div>
+                <!-- Add other experiences as cards here -->
+            </section>
+            
+            <!-- Projects Section -->
+            <section id="projects" class="content-section mb-3 d-flex flex-column">
+                <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom">
+                    <h2 class="mb-1">Ключевые проекты</h2>
+                </div>
+                <div class="content-card fade-in-up" style="transition-delay: 100ms;">
+                    <p class="card-meta">ВЫПУСКНАЯ РАБОТА · 2025</p>
+                    <h3 class="card-title">Система генерации и управления текстовыми мирами</h3>
+                    <p>Модульная AI-платформа с Flask-интерфейсом, игровым агентом на LangGraph и гибридной базой знаний (Neo4j + ChromaDB) для создания логически связных интерактивных миров. Экономия ~80% токенов по сравнению с MiniRAG.</p>
+                    <a href="https://github.com/QuipQuill/quip-quill" target="_blank" class="card-link">Посмотреть на GitHub <i class="fas fa-arrow-right"></i></a>
+                </div>
+                <div class="content-card fade-in-up" style="transition-delay: 200ms;">
+                    <p class="card-meta">ЛИЧНЫЙ ПРОЕКТ · 2025</p>
+                    <h3 class="card-title">RL-агент для игры «Рэндзю»</h3>
+                    <p>Агент на основе Deep Q-learning с приоритетным воспроизведением опыта. Включает веб-интерфейс для визуализации поведения и метрик обучения.</p>
+                    <a href="https://github.com/Bataevk" target="_blank" class="card-link">Репозиторий <i class="fas fa-arrow-right"></i></a>
+                </div>
+                 <!-- Add other projects as cards here -->
+            </section>
+
+            <!-- Skills Section -->
+            <section id="skills" class="content-section">
+                <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom">
+                    <h2 class="mb-1">Навыки</h2>
+                </div>
+                <div class="content-card fade-in-up" style="transition-delay: 100ms;">
+                    <div class="skills-group">
+                        <h4>LLM-интеграции</h4>
+                        <span class="skill-badge">LangGraph</span>
+                        <span class="skill-badge">LangChain</span>
+                        <span class="skill-badge">Function Calling API</span>
+                        <span class="skill-badge">RAG</span>
+                        <span class="skill-badge">LlamaCPP</span>
+                    </div>
+                    <div class="skills-group">
+                        <h4>ML & AI</h4>
+                        <span class="skill-badge">PyTorch</span>
+                        <span class="skill-badge">TensorFlow</span>
+                        <span class="skill-badge">Scikit-learn</span>
+                        <span class="skill-badge">CNN</span>
+                        <span class="skill-badge">RNN (LSTM, GRU)</span>
+                    </div>
+                    <div class="skills-group">
+                        <h4>Базы знаний и инструменты</h4>
+                        <span class="skill-badge">Neo4j</span>
+                        <span class="skill-badge">ChromaDB</span>
+                        <span class="skill-badge">SQLite</span>
+                        <span class="skill-badge">Python</span>
+                        <span class="skill-badge">NumPy & Pandas</span>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+</div>
+
+<script>
+    // --- Animation on Scroll Script ---
+    document.addEventListener('DOMContentLoaded', function() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Optional: stop observing after animation
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+
+        const elements = document.querySelectorAll('.fade-in-up');
+        elements.forEach(el => {
+            observer.observe(el);
+        });
+    });
+</script>
+
 </body>
 </html>
