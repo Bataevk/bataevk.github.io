@@ -202,6 +202,44 @@
             transform: scale(1.2);
             text-decoration: none;
         }
+
+        /* --- Card Expansion Animation --- */
+        .content-card {
+            /* Добавляем transition и к высоте, чтобы карточка плавно меняла размер */
+            transition: transform 0.3s ease, box-shadow 0.3s ease, height 0.5s ease-in-out; 
+        }
+
+        /* Делаем кликабельными только те карточки, где есть полное описание */
+        .content-card:has(.full-desc) {
+            cursor: pointer;
+        }
+
+        .short-desc, .full-desc {
+            /* Плавный переход для всех анимируемых свойств */
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            overflow: hidden;
+        }
+
+        /* Стили для скрытого полного описания */
+        .full-desc {
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-15px); /* Начальное положение для анимации "появления" */
+        }
+
+        /* Стили, когда карточка РАСКРЫТА (добавлен класс .expanded) */
+        .content-card.expanded .short-desc {
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(15px); /* Анимация "ухода" вниз */
+            margin-bottom: 0; /* Убираем отступ у скрытого элемента */
+        }
+
+        .content-card.expanded .full-desc {
+            max-height: 500px; /* Достаточно большая высота для контента */
+            opacity: 1;
+            transform: translateY(0); /* Возвращается в нормальное положение */
+        }
     </style>
 </head>
 <body>
@@ -234,26 +272,38 @@
             
             <!-- Experience Section -->
             <section id="experience" class="content-section mb-3 d-flex flex-column-reverse">
-                <!-- Прилипающий заголовок -->
                 <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom order-last">
                     <h2 class="mb-1">Опыт</h2>
                 </div>
+                
                 <div class="content-card fade-in-up" style="transition-delay: 100ms;">
                     <p class="card-meta">МАРТ – ИЮЛЬ 2024</p>
                     <h3 class="card-title">Архитектор и ведущий разработчик RAG-системы | TheWall Global</h3>
-                    <p class="mb-0">Разработал архитектуру и вел команду по созданию виртуального ассистента «Ask Handy» на базе RAG с классификатором GLINER. Отвечал за дизайн микросервисов и интеграцию с фронтендом.</p>
+                    
+                    <p class="mb-3 short-desc">Разработал архитектуру и вел команду по созданию виртуального ассистента «Ask Handy» на базе RAG с классификатором GLINER. Отвечал за дизайн микросервисов и интеграцию с фронтендом.</p>
+                    
+                    <div class="full-desc">
+                        <p>В рамках проекта была создана комплексная RAG-система для обработки пользовательских запросов в реальном времени. Ключевые достижения:</p>
+                        <ul class="mb-0">
+                            <li>Спроектировал и реализовал микросервисную архитектуру на FastAPI.</li>
+                            <li>Интегрировал NER-модель GLINER для точной классификации намерений пользователя.</li>
+                            <li>Настроил гибридный поиск по базе знаний, используя ChromaDB.</li>
+                            <li>Обеспечил бесшовную интеграцию с фронтенд-приложением через WebSocket для интерактивного диалога.</li>
+                        </ul>
+                    </div>
                 </div>
+
                 <div class="content-card fade-in-up" style="transition-delay: 200ms;">
                     <p class="card-meta">ОСЕНЬ 2024 - ЛЕТО 2025</p>
                     <h3 class="card-title">Преподаватель Python | Школа «Алгоритмика»</h3>
                     <p class="mb-0">Вел курсы по базовому и продвинутому Python. Помогал школьникам реализовывать проекты по анализу данных и машинному обучению.</p>
                 </div>
+
                 <div class="content-card fade-in-up" style="transition-delay: 200ms;">
                     <p class="card-meta"> ЛЕТО 2025</p>
                     <h3 class="card-title">Преподаватель Летней Школы университета "Дубна"</h3>
                     <p class="mb-0">Вел курс по классическому RAG для школьников.</p>
                 </div>
-                <!-- Add other experiences as cards here -->
             </section>
             
             <!-- Projects Section -->
@@ -332,7 +382,6 @@
         </main>
     </div>
 </div>
-
 <script>
     // --- Animation on Scroll Script ---
     document.addEventListener('DOMContentLoaded', function() {
@@ -340,7 +389,7 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Optional: stop observing after animation
+                    observer.unobserve(entry.target); 
                 }
             });
         }, {
@@ -351,8 +400,29 @@
         elements.forEach(el => {
             observer.observe(el);
         });
+
+        // --- НОВЫЙ СКРИПТ: Card Expansion Script ---
+        const expandableCards = document.querySelectorAll('#experience .content-card');
+
+        expandableCards.forEach(card => {
+            // Вешаем обработчик только если внутри карточки есть блок .full-desc
+            if (card.querySelector('.full-desc')) {
+                card.addEventListener('click', function() {
+                    // Закрываем все другие открытые карточки в этой секции
+                    expandableCards.forEach(otherCard => {
+                        if (otherCard !== this && otherCard.classList.contains('expanded')) {
+                            otherCard.classList.remove('expanded');
+                        }
+                    });
+                    
+                    // Переключаем класс .expanded для текущей карточки
+                    this.classList.toggle('expanded');
+                });
+            }
+        });
     });
 </script>
+
 
 </body>
 </html>
