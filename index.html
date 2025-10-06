@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Илья Батаев | AI Developer</title>
-    <meta name="description" content="Портфолио Ильи Батаева, разработчика и исследователя в области AI. Проекты, навыки и опыт в создании мультиагентных систем и LLM-решений.">
+    <title>Илья Батаев | AI Engineer</title>
+    <meta name="description" content="Портфолио Ильи Батаева, ML-инженера. Опыт в RAG-системах, мультиагентных платформах и гибридных базах знаний.">
     <!-- meta image -->
     <meta property="og:image" content="https://avatars.githubusercontent.com/u/106013347?v=4">
     <!-- Bootstrap 5 -->
@@ -130,20 +130,8 @@
         #poster-header .lead { color: var(--text-color); font-size: 1.1rem; }
         #poster-header .bio { color: var(--subtle-text); font-size: 0.95rem; }
 
-        .contact-nav a {
-            display: block;
-            padding: 0.5rem 0;
-            color: var(--subtle-text);
-            font-weight: 500;
-        }
-        .contact-nav a:hover {
-            color: var(--primary-color);
-            transform: translateX(5px);
-        }
-        .contact-nav i { width: 24px; text-align: center; margin-right: 10px; }
-
         /* --- Right Content Panel --- */
-        .content-section h2 { margin-bottom: 2rem; }
+        .content-section h2 { margin-bottom: 1rem; }
         .content-card {
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
@@ -158,8 +146,32 @@
         }
         .card-title { color: var(--header-color); font-size: 1.2rem; }
         .card-meta { color: var(--subtle-text); font-size: 0.85rem; margin-bottom: 1rem; }
-        .card-link { font-weight: 500; font-size: 0.9rem; }
-        .card-link i { margin-left: 5px; }
+        
+         /* --- Card Expansion Animation --- */
+        .content-card:has(.full-desc) {
+            cursor: pointer;
+        }
+        .short-desc, .full-desc {
+            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            overflow: hidden;
+        }
+        .full-desc {
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(-15px);
+        }
+        .content-card.expanded .short-desc {
+            max-height: 0;
+            opacity: 0;
+            transform: translateY(15px);
+            margin-bottom: 0;
+        }
+        .content-card.expanded .full-desc {
+            max-height: 500px;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
 
         /* --- Skill Badges --- */
         .skills-group { margin-bottom: 1.5rem; }
@@ -188,58 +200,64 @@
         }
         .fade-in-up.visible { opacity: 1; transform: translateY(0); }
 
-        /* .contact links */
-        
+        /* --- Contact Links --- */
         .contact-links a {
             font-size: 1.5rem;
             margin: 0 1rem;
             color: var(--subtle-text);
             transition: color 0.3s, transform 0.3s;
         }
-        
         .contact-links a:hover {
             color: var(--primary-color);
             transform: scale(1.2);
             text-decoration: none;
         }
 
-        /* --- Card Expansion Animation --- */
-        .content-card {
-            /* Добавляем transition и к высоте, чтобы карточка плавно меняла размер */
-            transition: transform 0.3s ease, box-shadow 0.3s ease, height 0.5s ease-in-out; 
+        /* --- NEW: TABS STYLES --- */
+        .tabs-nav {
+            display: flex;
+            gap: 1.5rem;
         }
-
-        /* Делаем кликабельными только те карточки, где есть полное описание */
-        .content-card:has(.full-desc) {
+        .tab-link {
+            background: none;
+            border: none;
+            padding: 0.5rem 0.25rem;
+            margin-bottom: -1px; /* To make the active border overlap the container's border */
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--subtle-text);
             cursor: pointer;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-link.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        .tabs-content {
+            position: relative;
+            overflow-y: scroll;
+            overflow-x: hidden; /* Important for swipe animations */
+            height: 90%;
+        }
+        .tab-pane {
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            display: none; /* Hidden by default */
+        }
+        .tab-pane.active {
+           display: block;
         }
 
-        .short-desc, .full-desc {
-            /* Плавный переход для всех анимируемых свойств */
-            transition: max-height 0.4s ease-in-out, opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
-            overflow: hidden;
-        }
-
-        /* Стили для скрытого полного описания */
-        .full-desc {
-            max-height: 0;
+        /* Animation classes toggled by JS */
+        .tab-pane.exiting {
             opacity: 0;
-            transform: translateY(-15px); /* Начальное положение для анимации "появления" */
+            transform: translateX(-30px);
         }
-
-        /* Стили, когда карточка РАСКРЫТА (добавлен класс .expanded) */
-        .content-card.expanded .short-desc {
-            max-height: 0;
+        .tab-pane.entering {
             opacity: 0;
-            transform: translateY(15px); /* Анимация "ухода" вниз */
-            margin-bottom: 0; /* Убираем отступ у скрытого элемента */
+            transform: translateX(30px);
         }
 
-        .content-card.expanded .full-desc {
-            max-height: 500px; /* Достаточно большая высота для контента */
-            opacity: 1;
-            transform: translateY(0); /* Возвращается в нормальное положение */
-        }
     </style>
 </head>
 <body>
@@ -247,182 +265,314 @@
 <div class="container-fluid">
     <div class="poster-layout row">
 
-        <!-- ======================= LEFT POSTER PANEL ======================= -->
+        <!-- ======================= LEFT POSTER PANEL (UNCHANGED) ======================= -->
         <header id="poster-header" class="col-lg-4 px-5 vh-100">
             <div class="poster-intro d-flex flex-column align-items-center text-center h-100 justify-content-center">
-                <!-- <img src="./profile.jpg" alt="Фото Ильи Батаева" class="profile-img fade-in-up"> -->
                 <img src="https://avatars.githubusercontent.com/u/106013347?v=4" alt="Фото Ильи Батаева" class="profile-img fade-in-up">
                 <h1 class="mt-4 fade-in-up" style="transition-delay: 100ms;">Батаев Илья</h1>
-                <p class="lead fade-in-up" style="transition-delay: 200ms;">AI & Software Developer</p>
+                <p class="lead fade-in-up" style="transition-delay: 200ms;">AI Engineer</p>
                 <p class="bio fade-in-up" style="transition-delay: 300ms;">
-                    Создаю модульные AI-платформы с фокусом на мультиагентных системах, гибридных базах знаний (Neo4j, ChromaDB) и оптимизации LLM-взаимодействий.
+                    Специализируюсь на создании сложных RAG-систем, мультиагентных платформ и гибридных баз знаний. Разрабатываю масштабируемые и эффективные AI-решения, которые приносят измеримую пользу бизнесу.
                 </p>
                 <div class="contact-links mt-4">
                     <a href="https://github.com/Bataevk" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
-                    <a href="mailto:bis.21@uni-dubna.ru" title="Email"><i class="fas fa-envelope"></i></a>
-                    <a href="https://tg.me/bataevk" title="Telegram"><i class="fab fa-telegram"></i></a>
-                    <!-- ГУГЛ ДИСК -->
-                    <a href="https://drive.google.com/drive/folders/1vX9Awkf_83Oz_TfGdN15URZUiTn4Z7JE?usp=sharing" target="_blank" title="Google Drive"><i class="fab fa-google-drive"></i></a>
+                    <a href="mailto:bis.21@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+                    <a href="https://bataevk.github.io" target="_blank" title="Личный сайт"><i class="fas fa-globe"></i></a>
+                    <a href="https://t.me/bataevk" target="_blank" title="Telegram"><i class="fab fa-telegram"></i></a>
                 </div>
             </div>
         </header>
 
-        <!-- ======================= RIGHT CONTENT PANEL ======================= -->
-        <main id="content-main" class="col-lg-8">
+        <!-- ======================= RIGHT CONTENT PANEL (MODIFIED) ======================= -->
+        <main id="content-main" class="col-lg-8 vh-100 pt-lg-3">
             
-            <!-- Experience Section -->
-            <section id="experience" class="content-section mb-3 d-flex flex-column-reverse">
-                <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom order-last">
-                    <h2 class="mb-1">Опыт</h2>
-                </div>
+            <!-- Tabs Navigation -->
+            <div class="tabs-nav fade-in-up py-3">
+                <button class="tab-link active" data-tab="hard-skills">Hard Skills</button>
+                <button class="tab-link" data-tab="personal">Личное</button>
+            </div>
+
+            <!-- Tabs Content -->
+            <div class="tabs-content sticky-top fade-in-up" style="transition-delay: 100ms;">
                 
-                <div class="content-card fade-in-up" style="transition-delay: 100ms;">
-                    <p class="card-meta">МАРТ – ИЮЛЬ 2024</p>
-                    <h3 class="card-title">Архитектор и ведущий разработчик RAG-системы | TheWall Global</h3>
+                <!-- Hard Skills Pane -->
+                <div id="hard-skills" class="tab-pane active">
+
+                    <section id="experience" class="content-section mb-3 d-flex flex-column-reverse">
+                        <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom order-last">
+                            <h2 class="mb-1">Опыт работы</h2>
+                        </div>
+                        
+                        <div class="content-card fade-in-up" style="transition-delay: 100ms;">
+                            <p class="card-meta">ИЮНЬ 2024 – МАЙ 2025 (1 ГОД)</p>
+                            <h3 class="card-title pb-2">AI Architect & Team Lead | Nordavind</h3>
+                            <p class="mb-3 short-desc">Пришел в компанию как ведущий разработчик после победы в хакатоне. Быстро вырос до архитектора и лида AI-направления, где проектировал и внедрял сложные AI-решения.</p>
+                            <div class="full-desc">
+                                <h5>Ключевые достижения:</h5>
+                                <ul>
+                                    <li><b>Виртуальный ассистент «Ask Handy»:</b> Спроектировал и возглавил разработку. Повысил точность ответов на 30% и снизил время ответа на 40% за счет оптимизации RAG-пайплайна.</li>
+                                    <li><b>Корпоративный поисковый ассистент:</b> Разработал RAG-архитектуру с query chains для анализа внутренних документов. Ускорил поиск информации для сотрудников на 60%.</li>
+                                    <li><b>Руководство командой:</b> Сформировал и руководил командой из 3 разработчиков, внедрил практики код-ревью и CI/CD, что ускорило цикл разработки на 25%.</li>
+                                </ul>
+                                <p class="mb-0"><b>Стек:</b> LangGraph, RAG, Query Chains, Neo4j, ChromaDB, FastAPI, Docker.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="content-card fade-in-up" style="transition-delay: 200ms;">
+                            <p class="card-meta">ИЮНЬ 2019 – АВГУСТ 2021 (2 ГОДА И 3 МЕСЯЦА)</p>
+                            <h3 class="card-title pb-2">Стажёр IT-отдела | Golibas Telecom</h3>
+                            <p class="mb-0">Получил первый практический опыт в IT. Помогал в поддержке сетевой инфраструктуры, освоил основы администрирования и написал первые скрипты на Python для автоматизации рутинных задач.</p>
+                        </div>
+                    </section>
                     
-                    <p class="mb-3 short-desc">Разработал архитектуру и вел команду по созданию виртуального ассистента «Ask Handy» на базе RAG с классификатором GLINER. Отвечал за дизайн микросервисов и интеграцию с фронтендом.</p>
+                    <section id="education" class="content-section mb-3 d-flex flex-column">
+                        <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom">
+                            <h2 class="mb-1">Образование</h2>
+                        </div>
+                        <div class="content-card fade-in-up" style="transition-delay: 100ms;">
+                            <h4 class="card-title pb-2" style="size: 1rem;">НИУ ИТМО (2025–2027)</h4>
+                            <p class="mb-3">Магистр, Проектирование и разработка систем ИИ.</p>
+                            <hr>
+                            <h4 class="card-title pb-2" style="size: 1rem; margin-top: 1.5rem;">Университет «Дубна» (2021–2025)</h4>
+                            <p class="mb-3">Бакалавр с отличием, Информатика и ВТ.</p>
+                            <hr>
+                            <h4 class="card-title pb-2" style="size: 1rem; margin-top: 1.5rem;">МФТИ (2024–2025)</h4>
+                            <p class="mb-0">Диплом о проф. переподготовке, Специалист по анализу больших данных.</p>
+                        </div>
+                    </section>
                     
-                    <div class="full-desc">
-                        <p>В рамках проекта была создана комплексная RAG-система для обработки пользовательских запросов в реальном времени. Ключевые достижения:</p>
-                        <ul class="mb-0">
-                            <li>Спроектировал и реализовал микросервисную архитектуру на FastAPI.</li>
-                            <li>Интегрировал NER-модель GLINER для точной классификации намерений пользователя.</li>
-                            <li>Настроил гибридный поиск по базе знаний, используя ChromaDB.</li>
-                            <li>Обеспечил бесшовную интеграцию с фронтенд-приложением через WebSocket для интерактивного диалога.</li>
-                        </ul>
-                    </div>
+                    
+                    <section id="projects" class="content-section mb-3 d-flex flex-column">
+                        <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom">
+                            <h2 class="mb-1">Проекты и Достижения</h2>
+                        </div>
+
+                        <div class="content-card fade-in-up" style="transition-delay: 100ms;">
+                            <p class="card-meta">НАУЧНО-ИССЛЕДОВАТЕЛЬСКАЯ РАБОТА · 2025</p>
+                            <h3 class="card-title pb-2">Система генерации текстовых миров (Quip-Quill)</h3>
+                            <p>Разработал прототип модульной платформы для интерактивных текстовых игр с мультиагентным подходом (LangGraph) и гибридной памятью (Neo4j + ChromaDB). Проект лег в основу магистерской диссертации.</p>
+                            <a href="https://github.com/QuipQuill/quip-quill" target="_blank" class="card-link">Посмотреть на GitHub <i class="fas fa-arrow-right"></i></a>
+                        </div>
+
+                        <div class="content-card fade-in-up" style="transition-delay: 200ms;">
+                            <p class="card-meta">ДОСТИЖЕНИЕ · 2025</p>
+                            <h3 class="card-title pb-2">Финалист «Я — профессионал»</h3>
+                            <p class="mb-0">Вышел в финал всероссийского студенческого конкурса по направлениям "Искусственный интеллект" и "Программная инженерия".</p>
+                        </div>
+
+                        <div class="content-card fade-in-up" style="transition-delay: 200ms;">
+                            <p class="card-meta">ЛИЧНЫЙ ПРОЕКТ · 2025</p>
+                            <h3 class="card-title pb-2">RL-агент для игры «Рэндзю»</h3>
+                            <p>Агент на основе Deep Q-learning с приоритетным воспроизведением опыта. Включает веб-интерфейс для визуализации поведения и метрик обучения.</p>
+                            <a href="https://github.com/Bataevk" target="_blank" class="card-link">Репозиторий <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                        
+                        <div class="content-card fade-in-up" style="transition-delay: 300ms;">
+                            <p class="card-meta">КЕЙС · 2024</p>
+                            <h3 class="card-title pb-2">GraphRAG как долговременная память для LLM-агента</h3>
+                            <p class="mb-0">На летней школе от AIRI реализовал PoC-решение, сравнив эффективность GraphRAG с классическим RAG. Результаты показали превосходство графового подхода в задачах, требующих сохранения сложного контекста.</p>
+                        </div>
+
+                    </section>
+
+                
+                    <section id="skills" class="content-section">
+                        <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom">
+                            <h2 class="mb-1">Навыки</h2>
+                        </div>
+
+                        <div class="content-card">
+                            <div class="skills-group">
+                                <h4>Языки</h4>
+                                <span class="skill-badge">Python (Advenced)</span>
+                                <span class="skill-badge">C++</span>
+                                <span class="skill-badge">C#</span>
+                                <span class="skill-badge">HTML,JS,CSS</span>
+                            </div>
+                            <div class="skills-group">
+                                <h4>AI/ML</h4>
+                                <span class="skill-badge">PyTorch</span>
+                                <span class="skill-badge">TensorFlow</span>
+                                <span class="skill-badge">Scikit-learn</span>
+                                <span class="skill-badge">LangChain</span>
+                                <span class="skill-badge">LangGraph</span>
+                                <span class="skill-badge">LLM Fine-tuning</span>
+                                <span class="skill-badge">RAG</span>
+                                <span class="skill-badge">GraphRAG</span>
+                                <span class="skill-badge">Multi-agent systems</span>
+                            </div>
+                            <div class="skills-group">
+                                <h4>Базы данных</h4>
+                                <span class="skill-badge">Neo4j</span>
+                                <span class="skill-badge">ChromaDB</span>
+                                <span class="skill-badge">PostgreSQL</span>
+                            </div>
+                            <div class="skills-group" style="margin-bottom: 0;">
+                                <h4>Инструменты</h4>
+                                <span class="skill-badge">Docker</span>
+                                <span class="skill-badge">Git</span>
+                                <span class="skill-badge">FastAPI</span>
+                            </div>
+                        </div>
+                    </section>
                 </div>
 
-                <div class="content-card fade-in-up" style="transition-delay: 200ms;">
-                    <p class="card-meta">ОСЕНЬ 2024 - ЛЕТО 2025</p>
-                    <h3 class="card-title">Преподаватель Python | Школа «Алгоритмика»</h3>
-                    <p class="mb-0">Вел курсы по базовому и продвинутому Python. Помогал школьникам реализовывать проекты по анализу данных и машинному обучению.</p>
+                <!-- Personal Pane -->
+                <div id="personal" class="tab-pane">
+                    
+                    <section id="teaching-experience" class="content-section mb-4">
+                         <h3 class="mb-3">Педагогический опыт</h3>
+                         <div class="content-card">
+                             <p class="card-meta">ОСЕНЬ 2024 - ЛЕТО 2025</p>
+                             <h4 class="card-title pb-2">Преподаватель Python | Школа «Алгоритмика»</h4>
+                             <p class="mb-0">Вел курсы по базовому и продвинутому Python. Помогал школьникам реализовывать проекты по анализу данных и машинному обучению.</p>
+                         </div>
+                         <div class="content-card">
+                             <p class="card-meta">ЛЕТО 2025</p>
+                             <h4 class="card-title pb-2">Преподаватель Летней Школы | Университет "Дубна"</h4>
+                             <p class="mb-0">Провел интенсивный курс по основам классического RAG для старшеклассников.</p>
+                         </div>
+                    </section>
+
+                    <section id="music" class="content-section mb-4">
+                        <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom">
+                            <h2 class="mb-1">Моя Музыка </h2>
+                        </div>
+                        <div class="fade-in-up" style="transition-delay: 100ms;">
+                            <iframe frameborder="0" allow="clipboard-write" style="border:none;width:614px;height:100px;" class="w-100" height="100" src="https://music.yandex.ru/iframe/album/34047320/track/133006465">Слушайте <a href="https://music.yandex.ru/track/133006465?utm_source=web&utm_medium=copy_link">Other Town</a> — <a href="https://music.yandex.ru/artist/23128039">Ilya Bataev</a> на Яндекс Музыке</iframe>
+                            <iframe frameborder="0" allow="clipboard-write" style="border:none;width:614px;height:100px;" class="w-100" height="100" src="https://music.yandex.ru/iframe/album/33750924/track/132291549">Слушайте <a href="https://music.yandex.ru/track/132291549?utm_source=web&utm_medium=copy_link">Space Rain</a> — <a href="https://music.yandex.ru/artist/23128039">Ilya Bataev</a> на Яндекс Музыке</iframe>
+                            <iframe frameborder="0" allow="clipboard-write" style="border:none;width:614px;height:100px;" class="w-100" height="100" src="https://music.yandex.ru/iframe/album/33572301">Слушайте <a href="https://music.yandex.ru/album/33572301?utm_source=web&utm_medium=copy_link">Twilight Forest</a> — <a href="https://music.yandex.ru/artist/23128039">Ilya Bataev</a> на Яндекс Музыке</iframe>
+                        </div>
+                    </section>
+
+                    <section id="design" class="content-section">
+                        <h3 class="mb-3">Дизайн (скоро)</h3>
+                        <div class="content-card">
+                            <p class="text-center card-meta mb-0 fs-6">Здесь скоро появятся примеры моих дизайнерских работ и проектов.</p>
+                        </div>
+                    </section>
                 </div>
 
-                <div class="content-card fade-in-up" style="transition-delay: 200ms;">
-                    <p class="card-meta"> ЛЕТО 2025</p>
-                    <h3 class="card-title">Преподаватель Летней Школы университета "Дубна"</h3>
-                    <p class="mb-0">Вел курс по классическому RAG для школьников.</p>
-                </div>
-            </section>
-            
-            <!-- Projects Section -->
-            <section id="projects" class="content-section mb-3 d-flex flex-column">
-                <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom">
-                    <h2 class="mb-1">Ключевые проекты</h2>
-                </div>
-                <div class="content-card fade-in-up" style="transition-delay: 100ms;">
-                    <p class="card-meta">ВЫПУСКНАЯ РАБОТА · 2025</p>
-                    <h3 class="card-title">Система генерации и управления текстовыми мирами</h3>
-                    <p>Модульная AI-платформа с Flask-интерфейсом, игровым агентом на LangGraph и гибридной базой знаний (Neo4j + ChromaDB) для создания логически связных интерактивных миров. Экономия ~80% токенов по сравнению с MiniRAG.</p>
-                    <a href="https://github.com/QuipQuill/quip-quill" target="_blank" class="card-link">Посмотреть на GitHub <i class="fas fa-arrow-right"></i></a>
-                </div>
-                <div class="content-card fade-in-up" style="transition-delay: 200ms;">
-                    <p class="card-meta">ЛИЧНЫЙ ПРОЕКТ · 2025</p>
-                    <h3 class="card-title">RL-агент для игры «Рэндзю»</h3>
-                    <p>Агент на основе Deep Q-learning с приоритетным воспроизведением опыта. Включает веб-интерфейс для визуализации поведения и метрик обучения.</p>
-                    <a href="https://github.com/Bataevk" target="_blank" class="card-link">Репозиторий <i class="fas fa-arrow-right"></i></a>
-                </div>
-                 <!-- Add other projects as cards here -->
-            </section>
-
-
-            <!-- My Design section (soon) -->
-            <section id="design" class="content-section">
-                <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom">
-                    <h2 class="mb-1">Мой Дизайн (скоро)</h2>
-                </div>
-            </section>
-
-            <!-- My Music Section (soon) -->
-            <section id="music" class="content-section">
-                <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom">
-                    <h2 class="mb-1">Моя Музыка </h2>
-                </div>
-                <div class="fade-in-up" style="transition-delay: 100ms;">
-                    <iframe frameborder="0" allow="clipboard-write" style="border:none;width:614px;height:100px;" class="w-100" height="100" src="https://music.yandex.ru/iframe/album/34047320/track/133006465">Слушайте <a href="https://music.yandex.ru/track/133006465?utm_source=web&utm_medium=copy_link">Other Town</a> — <a href="https://music.yandex.ru/artist/23128039">Ilya Bataev</a> на Яндекс Музыке</iframe>
-                    <iframe frameborder="0" allow="clipboard-write" style="border:none;width:614px;height:100px;" class="w-100" height="100" src="https://music.yandex.ru/iframe/album/33750924/track/132291549">Слушайте <a href="https://music.yandex.ru/track/132291549?utm_source=web&utm_medium=copy_link">Space Rain</a> — <a href="https://music.yandex.ru/artist/23128039">Ilya Bataev</a> на Яндекс Музыке</iframe>
-                    <iframe frameborder="0" allow="clipboard-write" style="border:none;width:614px;height:100px;" class="w-100" height="100" src="https://music.yandex.ru/iframe/album/33572301">Слушайте <a href="https://music.yandex.ru/album/33572301?utm_source=web&utm_medium=copy_link">Twilight Forest</a> — <a href="https://music.yandex.ru/artist/23128039">Ilya Bataev</a> на Яндекс Музыке</iframe>
-                </div>
-            </section>
-
-            <!-- Skills Section -->
-            <section id="skills" class="content-section">
-                <div class="fade-in-up sticky-top bg-theme py-3 mb-3 border-2 border-bottom">
-                    <h2 class="mb-1">Навыки</h2>
-                </div>
-                <div class="content-card fade-in-up" style="transition-delay: 100ms;">
-                    <div class="skills-group">
-                        <h4>LLM-интеграции</h4>
-                        <span class="skill-badge">LangGraph</span>
-                        <span class="skill-badge">LangChain</span>
-                        <span class="skill-badge">Function Calling API</span>
-                        <span class="skill-badge">RAG</span>
-                        <span class="skill-badge">LlamaCPP</span>
-                    </div>
-                    <div class="skills-group">
-                        <h4>ML & AI</h4>
-                        <span class="skill-badge">PyTorch</span>
-                        <span class="skill-badge">TensorFlow</span>
-                        <span class="skill-badge">Scikit-learn</span>
-                        <span class="skill-badge">CNN</span>
-                        <span class="skill-badge">RNN (LSTM, GRU)</span>
-                    </div>
-                    <div class="skills-group">
-                        <h4>Базы знаний и инструменты</h4>
-                        <span class="skill-badge">Neo4j</span>
-                        <span class="skill-badge">ChromaDB</span>
-                        <span class="skill-badge">SQLite</span>
-                        <span class="skill-badge">Python</span>
-                        <span class="skill-badge">NumPy & Pandas</span>
-                    </div>
-                </div>
-            </section>
-
+            </div>
         </main>
     </div>
 </div>
+
 <script>
-    // --- Animation on Scroll Script ---
     document.addEventListener('DOMContentLoaded', function() {
+        // --- Animation on Scroll Script ---
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); 
+                    observer.unobserve(entry.target);
                 }
             });
-        }, {
-            threshold: 0.1
-        });
+        }, { threshold: 0.1 });
 
         const elements = document.querySelectorAll('.fade-in-up');
-        elements.forEach(el => {
-            observer.observe(el);
-        });
+        elements.forEach(el => observer.observe(el));
 
-        // --- НОВЫЙ СКРИПТ: Card Expansion Script ---
+        // --- Card Expansion Script ---
         const expandableCards = document.querySelectorAll('#experience .content-card');
-
         expandableCards.forEach(card => {
-            // Вешаем обработчик только если внутри карточки есть блок .full-desc
             if (card.querySelector('.full-desc')) {
                 card.addEventListener('click', function() {
-                    // Закрываем все другие открытые карточки в этой секции
                     expandableCards.forEach(otherCard => {
                         if (otherCard !== this && otherCard.classList.contains('expanded')) {
                             otherCard.classList.remove('expanded');
                         }
                     });
-                    
-                    // Переключаем класс .expanded для текущей карточки
                     this.classList.toggle('expanded');
                 });
             }
         });
+
+        // --- NEW: TABS SCRIPT ---
+        const tabsNav = document.querySelector('.tabs-nav');
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        const tabsContent = document.querySelector('.tabs-content');
+
+        const switchTab = (targetTabId) => {
+            const currentActivePane = document.querySelector('.tab-pane.active');
+            const targetPane = document.getElementById(targetTabId);
+
+            if (currentActivePane === targetPane) {
+                return; // Do nothing if the same tab is clicked
+            }
+            
+            // Animate out the current pane
+            if (currentActivePane) {
+                currentActivePane.classList.add('exiting');
+                currentActivePane.addEventListener('transitionend', function handler() {
+                    this.removeEventListener('transitionend', handler);
+                    this.classList.remove('active', 'exiting');
+                });
+            }
+
+            // Animate in the new pane
+            if (targetPane) {
+                targetPane.classList.add('active', 'entering');
+                setTimeout(() => {
+                    targetPane.classList.remove('entering');
+                }, 10); // A tiny delay to ensure transition triggers
+            }
+
+            // Update active state for tab links
+            tabLinks.forEach(link => {
+                link.classList.toggle('active', link.dataset.tab === targetTabId);
+            });
+        };
+
+        // Click event for tabs
+        tabsNav.addEventListener('click', (event) => {
+            if (event.target.classList.contains('tab-link')) {
+                const targetTabId = event.target.dataset.tab;
+                switchTab(targetTabId);
+            }
+        });
+
+        // --- Swipe logic for mobile ---
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const swipeThreshold = 50; // Minimum distance for a swipe
+
+        tabsContent.addEventListener('touchstart', (event) => {
+            touchStartX = event.changedTouches[0].screenX;
+        }, { passive: true });
+
+        tabsContent.addEventListener('touchend', (event) => {
+            touchEndX = event.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        const handleSwipe = () => {
+            const deltaX = touchEndX - touchStartX;
+            if (Math.abs(deltaX) < swipeThreshold) return;
+
+            const currentActiveLink = document.querySelector('.tab-link.active');
+            let currentActiveIndex = -1;
+            
+            // Find the index of the current active tab link
+            tabLinks.forEach((link, index) => {
+                if (link === currentActiveLink) {
+                    currentActiveIndex = index;
+                }
+            });
+
+            let newIndex;
+            if (deltaX < 0) { // Swiped left
+                newIndex = (currentActiveIndex + 1) % tabLinks.length;
+            } else { // Swiped right
+                newIndex = (currentActiveIndex - 1 + tabLinks.length) % tabLinks.length;
+            }
+
+            const newTabId = tabLinks[newIndex].dataset.tab;
+            switchTab(newTabId);
+        };
     });
 </script>
-
 
 </body>
 </html>
