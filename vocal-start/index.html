@@ -1,0 +1,750 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вокал с нуля: Пой просто и уверенно</title>
+    <meta name="description" content="Интерактивный план на 25 недель для полных новичков: фокус на простоте, мотивации и чистом пении без зажимов.">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+    <!-- Font Awesome (for icons) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            /* Light Theme */
+            --bg-color-light: #f5f5f7;
+            --text-color-light: #1d1d1f;
+            --header-color-light: #000000;
+            --primary-color-light: #b30c00; /* Deeper Scarlet */
+            --card-bg-light: #ffffff;
+            --card-border-light: #e8e8ed;
+            --subtle-text-light: #6e6e73;
+            
+            /* Dark Theme */
+            --bg-color-dark: #121212;
+            --text-color-dark: #e0e0e0;
+            --header-color-dark: #ffffff;
+            --primary-color-dark: #ff453a; /* Brighter Scarlet for Dark Mode */
+            --card-bg-dark: #1e1e1e;
+            --card-border-dark: #333333;
+            --subtle-text-dark: #a0a0a0;
+        }
+
+        /* --- Default Light Theme --- */
+        body {
+            --bg-color: var(--bg-color-light);
+            --text-color: var(--text-color-light);
+            --header-color: var(--header-color-light);
+            --primary-color: var(--primary-color-light);
+            --card-bg: var(--card-bg-light);
+            --card-border: var(--card-border-light);
+            --subtle-text: var(--subtle-text-light);
+
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.3s, color 0.3s;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .bg-theme {
+            background-color: var(--bg-color);
+        }
+
+        /* --- Dark Theme via prefers-color-scheme --- */
+        @media (prefers-color-scheme: dark) {
+            .bg-theme {
+                background-color: var(--bg-color-dark);
+            }
+            body {
+                --bg-color: var(--bg-color-dark);
+                --text-color: var(--text-color-dark);
+                --header-color: var(--header-color-dark);
+                --primary-color: var(--primary-color-dark);
+                --card-bg: var(--card-bg-dark);
+                --card-border: var(--card-border-dark);
+                --subtle-text: var(--subtle-text-dark);
+            }
+            ::-webkit-scrollbar { width: 8px; }
+            ::-webkit-scrollbar-track { background: var(--bg-color); }
+            ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+            ::-webkit-scrollbar-thumb:hover { background: #555; }
+        }
+
+        /* --- General & Typography --- */
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; color: var(--header-color); font-weight: 700; }
+        a { color: var(--primary-color); text-decoration: none; transition: all 0.2s ease-in-out; }
+        a:hover { color: var(--header-color); text-decoration: none; }
+        p { line-height: 1.6; }
+        
+        /* --- Layout: Poster Style --- */
+        .poster-layout {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        #poster-header {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            padding: 3rem 2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        #content-main {
+            padding: 3rem 2rem;
+            padding-left: 0;
+        }
+
+        /* Responsive layout */
+        @media (max-width: 991.98px) {
+            #poster-header {
+                position: static;
+                height: auto;
+                padding-bottom: 1rem;
+            }
+            #content-main, #poster-header {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        /* --- Left Poster Panel --- */
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--card-border);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        #poster-header h1 { font-size: 2.5rem; margin-top: 1.5rem; }
+        #poster-header .lead { color: var(--text-color); font-size: 1.1rem; }
+        #poster-header .bio { color: var(--subtle-text); font-size: 0.95rem; }
+
+        /* --- Right Content Panel --- */
+        .content-section h2 { margin-bottom: 1rem; }
+        .content-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.75rem;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.15);
+        }
+        .card-title { color: var(--header-color); font-size: 1.2rem; }
+        .card-meta { color: var(--subtle-text); font-size: 0.85rem; margin-bottom: 1rem; }
+        
+        /* --- Chart --- */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* --- Animations --- */
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* --- Week Selector --- */
+        .week-selector .btn {
+            width: 40px;
+            height: 40px;
+            font-size: 0.9rem;
+            margin: 0.25rem;
+            transition: transform 0.2s;
+        }
+        .week-selector .btn:hover {
+            transform: scale(1.1);
+        }
+        .active-week {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+            transform: scale(1.1);
+        }
+
+        /* --- NEW: TABS STYLES --- */
+        .tabs-nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .tab-link {
+            background: none;
+            border: none;
+            padding: 0.5rem 0.25rem;
+            margin-bottom: -1px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--subtle-text);
+            cursor: pointer;
+            transition: color 0.3s ease, border-color 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+        .tab-link.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+        .tabs-content {
+            position: relative;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            height: 90%;
+        }
+        .tab-pane {
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+            display: none;
+        }
+        .tab-pane.active {
+            display: block;
+        }
+
+        /* Animation classes toggled by JS */
+        .tab-pane.exiting {
+            opacity: 0;
+            transform: translateX(-30px);
+        }
+        .tab-pane.entering {
+            opacity: 0;
+            transform: translateX(30px);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="poster-layout row">
+
+        <!-- ======================= LEFT POSTER PANEL ======================= -->
+        <header id="poster-header" class="col-lg-4 px-5 vh-100">
+            <div class="poster-intro d-flex flex-column align-items-center text-center h-100 justify-content-center">
+                <img src="/source/icons/vocal-icon.png" alt="Иконка вокального курса для новичков" class="profile-img fade-in-up">
+                <h2 class="mt-4 fade-in-up" style="transition-delay: 100ms;">Вокал с нуля</h2>
+                <!-- <p class="lead fade-in-up" style="transition-delay: 200ms;">От расслабления к силе голоса</p> -->
+                <p class="bio fade-in-up" style="transition-delay: 300ms;">
+                    Для полных новичков: фокус на простоте, мотивации и эффективности. Расслабление, основы, интонация с ранними песнями.
+                </p>
+                <div class="chart-container mt-4 fade-in-up" style="transition-delay: 400ms;">
+                    <canvas id="progressChart"></canvas>
+                </div>
+                <p class="text-center text-sm subtle-text mt-2">Визуализация прогресса ключевых навыков.</p>
+            </div>
+        </header>
+
+        <!-- ======================= RIGHT CONTENT PANEL ======================= -->
+        <main id="content-main" class="col-lg-8 vh-100 pt-lg-3">
+            
+            <!-- Tabs Navigation for Blocks -->
+            <div class="tabs-nav fade-in-up py-3">
+                <button class="tab-link active" data-tab="all">Все недели</button>
+                <button class="tab-link" data-tab="block1">Блок 1: Основы</button>
+                <button class="tab-link" data-tab="block2">Блок 2: Интонирование</button>
+            </div>
+
+            <!-- Tabs Content -->
+            <div class="tabs-content sticky-top fade-in-up" style="transition-delay: 100ms;">
+                
+                <!-- All Weeks Pane -->
+                <div id="all" class="tab-pane active">
+                    <div id="week-selector" class="d-flex flex-wrap justify-content-center mb-4 week-selector"></div>
+                    <div id="week-content" class="space-y-6"></div>
+                </div>
+
+                <!-- Block 1 Pane -->
+                <div id="block1" class="tab-pane">
+                    <div id="week-selector-block1" class="d-flex flex-wrap justify-content-center mb-4 week-selector"></div>
+                    <div id="week-content-block1" class="space-y-6"></div>
+                </div>
+
+                <!-- Block 2 Pane -->
+                <div id="block2" class="tab-pane">
+                    <div id="week-selector-block2" class="d-flex flex-wrap justify-content-center mb-4 week-selector"></div>
+                    <div id="week-content-block2" class="space-y-6"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+</div>
+
+<script>
+    const courseData = [
+        {
+            week: 1, block: 0, title: "Знакомство и расслабление",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Создать безопасную атмосферу в группе. Понять философию курса: расслабление → основы → интонация и песни. Освоить базовое расслабление." },
+                theory: { title: "📚 Теория", text: "Обзор: расслабление → основы → интонация и песни. Голосовой аппарат (просто: дыхание, связки, резонаторы). Почему тихо напеваем." },
+                practice: { title: "🎤 Практика", text: "Знакомство: \"пропой имя\". Зевки, выкрики \"Я!\" (юмор: \"Не верю, если зажато!\"). Тихое мычание." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Вокал — йога: расслабься сначала.\" Записывай себя для прогресса. \nЗадание: 10 мин: зевки + напев \"м\" на 1 ноте. Запись." }
+            }
+        },
+        {
+            week: 2, block: 1, title: "Расслабление гортани (ч.1)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Понять разницу между высокой и низкой позицией гортани. Научиться опускать гортань." },
+                theory: { title: "📚 Теория", text: "Гортань: высокая — зажим, низкая — объем." },
+                practice: { title: "🎤 Практика", text: "Зеркало: глоток \"зависший\", отодвигать язык. Напев \"нг\" (3 ноты). Пары: проверка расслабления." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Гортань — лифт: опусти вниз!\" Если напряг — \"Глотаешь лимон? Расслабься!\" \nЗадание: 10 мин: глотки + \"нг\" (5 нот). Запись." }
+            }
+        },
+        {
+            week: 3, block: 1, title: "Расслабление гортани (ч.2)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Закрепить расслабление гортани. Добавить роль языка и челюсти." },
+                theory: { title: "📚 Теория", text: "Повтор + роль языка/челюсти." },
+                practice: { title: "🎤 Практика", text: "Повтор упражнений. Добавить массаж шеи. Группа: цепочка \"нг\"." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Представь горячую картошку во рту — пространство само!\" \nЗадание: 12 мин: повтор + чтение текста низким голосом." }
+            }
+        },
+        {
+            week: 4, block: 1, title: "Дыхание и осанка (ч.1)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Освоить диафрагмальное дыхание и правильную осанку." },
+                theory: { title: "📚 Теория", text: "Диафрагма: вдох животом. Осанка: прямая спина." },
+                practice: { title: "🎤 Практика", text: "Книга на живот (лежа). \"С-с-с\" выдох. Стоя: осанка у стены." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Стой как магнит к потолку!\" Дыши глубоко, не плечами. \nЗадание: 10 мин: дыхание + \"с-с-с\" (увеличь длительность)." }
+            }
+        },
+        {
+            week: 5, block: 1, title: "Дыхание и осанка (ч.2)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Закрепить дыхание и осанку, связать с голосом." },
+                theory: { title: "📚 Теория", text: "Повтор + связь с голосом." },
+                practice: { title: "🎤 Практика", text: "Повтор. Добавить напев на \"а\" с опорой." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Дыхание — топливо: экономь, но не жми.\" \nЗадание: 12 мин: осанка + напев длинных нот. Запись." }
+            }
+        },
+        {
+            week: 6, block: 1, title: "Грудной резонатор (ч.1)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Понять грудной резонатор и ощутить вибрацию." },
+                theory: { title: "📚 Теория", text: "Грудь: вибрация для низких нот." },
+                practice: { title: "🎤 Практика", text: "Рука на грудь: \"моо\" низко. Лежа: гравитация." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Грудь — барабан: стучи тихо сначала.\" \nЗадание: 10 мин: \"моо\" гамма (5 нот)." }
+            }
+        },
+        {
+            week: 7, block: 1, title: "Грудной резонатор (ч.2)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Закрепить грудной резонатор, добавить мелодию." },
+                theory: { title: "📚 Теория", text: "Повтор + переход к громче." },
+                practice: { title: "🎤 Практика", text: "Повтор. Добавить простую мелодию на \"моо\"." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Не толкай — вибрируй!\" \nЗадание: 12 мин: мелодия (\"Happy Birthday\" низко)." }
+            }
+        },
+        {
+            week: 8, block: 1, title: "Головной резонатор (ч.1)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Понять головной резонатор и ощутить вибрацию." },
+                theory: { title: "📚 Теория", text: "Голова: вибрация для высоких.<img src=\"https://images.squarespace-cdn.com/content/v1/5b8fe703f8370aafdc2f9bdd/1540463498727-NCDRQ96PLQ4I00RODUSJ/5839438.jpg\" alt=\"Диаграмма пазух головы для вокальных резонаторов\" class=\"img-fluid\">" },
+                practice: { title: "🎤 Практика", text: "\"Мии\" высоко, рука на лбу. Скольжение \"моо-мии\"." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Голова — колокол: звони легко!\" \nЗадание: 10 мин: \"мии\" гамма." }
+            }
+        },
+        {
+            week: 9, block: 1, title: "Головной резонатор (ч.2)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Закрепить головной резонатор, смешать с грудным." },
+                theory: { title: "📚 Теория", text: "Повтор + смешивание с грудным." },
+                practice: { title: "🎤 Практика", text: "Повтор. Арпеджио \"моо-мии\"." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Волна от груди к голове.\" \nЗадание: 12 мин: арпеджио + запись." }
+            }
+        },
+        {
+            week: 10, block: 1, title: "Ревизия основ",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Повторить блок основ. Провести отзывы." },
+                theory: { title: "📚 Теория", text: "Обзор блока." },
+                practice: { title: "🎤 Практика", text: "Смешанная практика. Отзывы в кругу." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Пазл собирается: что твое слабое место?\" \nЗадание: 15 мин: повтор слабых упражнений." }
+            }
+        },
+        {
+            week: 11, block: 1, title: "Базовая интонация (ч.1)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Ввести базовую интонацию с тюнером." },
+                theory: { title: "📚 Теория", text: "Интонация: точность нот. Тюнер." },
+                practice: { title: "🎤 Практика", text: "Калибровка нот по тюнеру. Интервалы (третьи)." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Прицел: целься точно!\" \nЗадание: 10 мин: третьи + тюнер." }
+            }
+        },
+        {
+            week: 12, block: 1, title: "Базовая интонация (ч.2)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Закрепить базовую интонацию с гаммами." },
+                theory: { title: "📚 Теория", text: "Повтор + гаммы." },
+                practice: { title: "🎤 Практика", text: "Гаммы тихо. Пары: слушать друг друга." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Тихо — ошибки видны.\" Шутка: \"Фальшь? Спой чище!\" \nЗадание: 12 мин: гаммы + запись." }
+            }
+        },
+        {
+            week: 13, block: 2, title: "Интонация в грудном (ч.1)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Освоить интонацию в грудном регистре." },
+                theory: { title: "📚 Теория", text: "Низы: стабильность." },
+                practice: { title: "🎤 Практика", text: "Гаммы в груди. Простая песня на \"ма\"." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Низы — фундамент.\" \nЗадание: 10 мин: песня низко." }
+            }
+        },
+        {
+            week: 14, block: 2, title: "Интонация в грудном (ч.2)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Закрепить интонацию в грудном с мелодиями." },
+                theory: { title: "📚 Теория", text: "Повтор + мелодии." },
+                practice: { title: "🎤 Практика", text: "Разучивание песни (\"Happy Birthday\")." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Слушай себя и тюнер.\" \nЗадание: 12 мин: песня + анализ." }
+            }
+        },
+        {
+            week: 15, block: 2, title: "Интонация в головном (ч.1)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Освоить интонацию в головном регистре." },
+                theory: { title: "📚 Теория", text: "Верха: легкость." },
+                practice: { title: "🎤 Практика", text: "Арпеджио высоко. Песня выше." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Верха — стекло: не дави.\" \nЗадание: 10 мин: арпеджио." }
+            }
+        },
+        {
+            week: 16, block: 2, title: "Интонация в головном (ч.2)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Закрепить интонацию в головном с смешиванием." },
+                theory: { title: "📚 Теория", text: "Повтор + смешивание." },
+                practice: { title: "🎤 Практика", text: "Песня с переходами." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Плавный полет.\" \nЗадание: 12 мин: песня целиком." }
+            }
+        },
+        {
+            week: 17, block: 2, title: "Групповая интонация",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Освоить групповую интонацию в унисон и дуэтах." },
+                theory: { title: "📚 Теория", text: "Гармония в группе." },
+                practice: { title: "🎤 Практика", text: "Унисон/дуэты песни." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Слушай других!\" Запись группы. \nЗадание: 10 мин: дуэт с записью." }
+            }
+        },
+        {
+            week: 18, block: 2, title: "Интонация с динамикой",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Добавить динамику к интонации." },
+                theory: { title: "📚 Теория", text: "Crescendo/diminuendo." },
+                practice: { title: "🎤 Практика", text: "Песня с громкостью." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Динамика — эмоции.\" \nЗадание: 12 мин: песня с динамикой." }
+            }
+        },
+        {
+            week: 19, block: 2, title: "Песни: применение (ч.1)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Интегрировать навыки в репертуар." },
+                theory: { title: "📚 Теория", text: "Интеграция в репертуар." },
+                practice: { title: "🎤 Практика", text: "Разучивание 2-й песни." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Песня — тест.\" \nЗадание: 10 мин: новая песня на \"ма\"." }
+            }
+        },
+        {
+            week: 20, block: 2, title: "Песни: применение (ч.2)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Закрепить песни со словами." },
+                theory: { title: "📚 Теория", text: "Повтор + слова." },
+                practice: { title: "🎤 Практика", text: "Песня со словами." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Наслаждайся!\" \nЗадание: 12 мин: песня целиком." }
+            }
+        },
+        {
+            week: 21, block: 2, title: "Импровизация базовая",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Освоить базовую импровизацию." },
+                theory: { title: "📚 Теория", text: "Спонтанность." },
+                practice: { title: "🎤 Практика", text: "Вопрос-ответ в парах." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Нет ошибок — эксперимент.\" \nЗадание: 10 мин: импров на 3 ноты." }
+            }
+        },
+        {
+            week: 22, block: 2, title: "Ревизия интонации",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Повторить блок интонации. Провести отзывы." },
+                theory: { title: "📚 Теория", text: "Обзор блока." },
+                practice: { title: "🎤 Практика", text: "Смешанная практика. Отзывы." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Что улучшилось?\" \nЗадание: 15 мин: слабые места." }
+            }
+        },
+        {
+            week: 23, block: 2, title: "Полные песни (ч.1)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Добавить стиль и эмоции к песням." },
+                theory: { title: "📚 Теория", text: "Стиль и эмоции." },
+                practice: { title: "🎤 Практика", text: "Песня с выражением." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Добавь душу.\" \nЗадание: 12 мин: репетиция." }
+            }
+        },
+        {
+            week: 24, block: 2, title: "Полные песни (ч.2)",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Подготовиться к финалу с выступлениями." },
+                theory: { title: "📚 Теория", text: "Подготовка к финалу." },
+                practice: { title: "🎤 Практика", text: "Групповые выступления." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Экспериментируй.\" \nЗадание: 15 мин: финальная песня." }
+            }
+        },
+        {
+            week: 25, block: 0, title: "Финал и план вперед",
+            content: {
+                goals: { title: "🎯 Цели урока", text: "Подвести итоги, выступить и спланировать дальнейшие занятия." },
+                theory: { title: "📚 Теория", text: "Итоги, советы." },
+                practice: { title: "🎤 Практика", text: "Выступления. Рефлексия." },
+                homework: { title: "🏡 Домашнее задание и лайфхаки", text: "\"Продолжай: ты готов!\" Лайфхак: ежедневная рутина. \nЗадание: План самостоятельных занятий (10 мин/день)." }
+            }
+        }
+    ];
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabLinks = document.querySelectorAll('.tab-link');
+        const tabPanes = document.querySelectorAll('.tab-pane');
+        const tabsContent = document.querySelector('.tabs-content');
+        const tabsNav = document.querySelector('.tabs-nav');
+
+        const switchTab = (targetTabId) => {
+            const currentActivePane = document.querySelector('.tab-pane.active');
+            const targetPane = document.getElementById(targetTabId);
+
+            if (currentActivePane === targetPane) return;
+
+            if (currentActivePane) {
+                currentActivePane.classList.add('exiting');
+                currentActivePane.addEventListener('transitionend', function handler() {
+                    this.removeEventListener('transitionend', handler);
+                    this.classList.remove('active', 'exiting');
+                });
+            }
+
+            if (targetPane) {
+                targetPane.classList.add('active', 'entering');
+                setTimeout(() => {
+                    targetPane.classList.remove('entering');
+                }, 10);
+            }
+
+            tabLinks.forEach(link => {
+                link.classList.toggle('active', link.dataset.tab === targetTabId);
+            });
+
+            renderWeekSelector(targetTabId);
+        };
+
+        tabsNav.addEventListener('click', (event) => {
+            if (event.target.classList.contains('tab-link')) {
+                const targetTabId = event.target.dataset.tab;
+                switchTab(targetTabId);
+            }
+        });
+
+        // Swipe logic
+        let touchStartX = 0;
+        let touchEndX = 0;
+        const swipeThreshold = 50;
+
+        tabsContent.addEventListener('touchstart', (event) => {
+            touchStartX = event.changedTouches[0].screenX;
+        }, { passive: true });
+
+        tabsContent.addEventListener('touchend', (event) => {
+            touchEndX = event.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        const handleSwipe = () => {
+            const deltaX = touchEndX - touchStartX;
+            if (Math.abs(deltaX) < swipeThreshold) return;
+
+            const currentActiveLink = document.querySelector('.tab-link.active');
+            let currentActiveIndex = -1;
+
+            tabLinks.forEach((link, index) => {
+                if (link === currentActiveLink) currentActiveIndex = index;
+            });
+
+            let newIndex;
+            if (deltaX < 0) { // left
+                newIndex = (currentActiveIndex + 1) % tabLinks.length;
+            } else { // right
+                newIndex = (currentActiveIndex - 1 + tabLinks.length) % tabLinks.length;
+            }
+
+            const newTabId = tabLinks[newIndex].dataset.tab;
+            switchTab(newTabId);
+        };
+
+        // Week rendering functions
+        let activeWeek = 1;
+
+        function renderWeekSelector(filterBlock = 'all') {
+            const selectorId = filterBlock === 'all' ? 'week-selector' : `week-selector-${filterBlock}`;
+            const selector = document.getElementById(selectorId);
+            const contentId = filterBlock === 'all' ? 'week-content' : `week-content-${filterBlock}`;
+            selector.innerHTML = '';
+
+            const filteredData = courseData.filter(item => {
+                if (filterBlock === 'all') return true;
+                if (filterBlock === 'block1') return item.block === 1 || item.week === 1;
+                if (filterBlock === 'block2') return item.block === 2 || item.week === 25;
+                return false;
+            });
+
+            filteredData.forEach(item => {
+                const button = document.createElement('button');
+                button.dataset.week = item.week;
+                button.textContent = item.week;
+                let bgClass = 'btn-outline-secondary';
+                if (item.block === 1) bgClass = 'btn-outline-info';
+                if (item.block === 2) bgClass = 'btn-outline-warning';
+
+                button.className = `btn ${bgClass} rounded-circle`;
+                if (item.week === activeWeek) button.classList.add('active-week');
+
+                button.addEventListener('click', () => {
+                    activeWeek = item.week;
+                    renderWeekContent(item.week, contentId);
+                    updateActiveWeekButton(filterBlock);
+                });
+                selector.appendChild(button);
+            });
+
+            // Initial content
+            renderWeekContent(activeWeek, contentId);
+        }
+
+        function updateActiveWeekButton(filterBlock) {
+            const selectorId = filterBlock === 'all' ? 'week-selector' : `week-selector-${filterBlock}`;
+            document.querySelectorAll(`#${selectorId} .btn`).forEach(btn => {
+                btn.classList.remove('active-week');
+                if (parseInt(btn.dataset.week) === activeWeek) btn.classList.add('active-week');
+            });
+        }
+
+        function renderWeekContent(weekNumber, contentId) {
+            const data = courseData.find(item => item.week === weekNumber);
+            if (!data) return;
+
+            const weekContent = document.getElementById(contentId);
+            weekContent.innerHTML = '';
+
+            const titleCard = document.createElement('div');
+            titleCard.className = "text-center p-4";
+            titleCard.innerHTML = `
+                <h2 class="mb-0">Неделя ${data.week}: ${data.title}</h2>
+            `;
+            weekContent.appendChild(titleCard);
+
+            const row = document.createElement('div');
+            row.className = "row g-4";
+
+            Object.values(data.content).forEach(section => {
+                const col = document.createElement('div');
+                col.className = "col-md-6";
+                const card = document.createElement('div');
+                card.className = "content-card h-100";
+                card.innerHTML = `
+                    <h3 class="card-title mb-3">${section.title}</h3>
+                    <p class="whitespace-pre-line">${section.text}</p>
+                `;
+                col.appendChild(card);
+                row.appendChild(col);
+            });
+            weekContent.appendChild(row);
+        }
+
+        // Initial render
+        renderWeekSelector('all');
+
+        // Chart
+        const ctx = document.getElementById('progressChart').getContext('2d');
+        const labels = Array.from({length: 25}, (_, i) => `Н${i + 1}`);
+
+        const techniqueData = [0, 10, 20, 25, 30, 35, 40, 45, 50, 55, 60, 60, 60, 60, 60, 60, 60, 60, 65, 65, 65, 70, 75, 80, 85];
+        const intonationData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 10, 20, 30, 40, 50, 60, 70, 75, 80, 85, 90, 95, 97, 98, 100];
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Техника Основ',
+                    data: techniqueData,
+                    borderColor: "var(--primary-color)",
+                    backgroundColor: 'rgba(179, 12, 0, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }, {
+                    label: 'Точность Интонации',
+                    data: intonationData,
+                    borderColor: '#f59e0b',
+                    backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        title: { display: true, text: 'Уровень освоения (%)' }
+                    },
+                    x: {
+                        title: { display: true, text: 'Недели курса' }
+                    }
+                },
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) label += ': ';
+                                if (context.parsed.y !== null) label += context.parsed.y + '%';
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Animation observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.fade-in-up').forEach(el => observer.observe(el));
+    });
+</script>
+
+</body>
+</html>
