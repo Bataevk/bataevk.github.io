@@ -412,14 +412,12 @@
                                 <span class="lang-ru">Опыт работы</span>
                                 <span class="lang-en d-none">Work Experience</span>
                             </h2>
+                            <p class="card-meta mb-0" data-time-total="experience" style="font-size:0.8rem;"></p>
                         </div>
 
                         <!-- Experience Card 1 -->
                         <div class="content-card fade-in-up" style="transition-delay: 200ms;">
-                            <p class="card-meta">
-                                <span class="lang-ru">ОКТЯБРЬ 2025 – СЕЙЧАС</span>
-                                <span class="lang-en d-none">OCTOBER 2025 – PRESENT</span>
-                            </p>
+                            <p class="card-meta" data-time="10.25-now"></p>
                             <h3 class="card-title pb-2">
                                 <span class="lang-ru">Prompt-инженер | Okkam</span>
                                 <span class="lang-en d-none">Prompt Engineer | Okkam</span>
@@ -432,10 +430,7 @@
                         
                         <!-- Experience Card 2 (Expandable) -->
                         <div class="content-card fade-in-up" style="transition-delay: 100ms;">
-                            <p class="card-meta">
-                                <span class="lang-ru">ИЮНЬ 2024 – МАЙ 2025 (1 ГОД)</span>
-                                <span class="lang-en d-none">JUNE 2024 – MAY 2025 (1 YEAR)</span>
-                            </p>
+                            <p class="card-meta" data-time="06.24-05.25"></p>
                             <h3 class="card-title pb-2">AI Architect & Team Lead | Nordavind</h3>
                             
                             <p class="mb-3 short-desc">
@@ -471,10 +466,7 @@
                         
                         <!-- Experience Card 3 -->
                         <div class="content-card fade-in-up" style="transition-delay: 200ms;">
-                            <p class="card-meta">
-                                <span class="lang-ru">ИЮНЬ 2019 – АВГУСТ 2021 (2 ГОДА И 3 МЕСЯЦА)</span>
-                                <span class="lang-en d-none">JUNE 2019 – AUGUST 2021 (2 YEARS & 3 MONTHS)</span>
-                            </p>
+                            <p class="card-meta" data-time="06.19-08.21"></p>
                             <h3 class="card-title pb-2">
                                 <span class="lang-ru">Стажёр IT-отдела | Golibas Telecom</span>
                                 <span class="lang-en d-none">IT Intern | Golibas Telecom</span>
@@ -737,6 +729,115 @@
 </div>
 
 <script>
+    // --- Work Duration Engine ---
+    // Parses data-time="MM.YY-MM.YY" or data-time="MM.YY-now"
+    // and generates bilingual <span> children automatically.
+    // data-time-total="experience" sums all [data-time] inside #experience.
+
+    const MONTH_NAMES_RU = [
+        'ЯНВАРЬ','ФЕВРАЛЬ','МАРТ','АПРЕЛЬ','МАЙ','ИЮНЬ',
+        'ИЮЛЬ','АВГУСТ','СЕНТЯБРЬ','ОКТЯБРЬ','НОЯБРЬ','ДЕКАБРЬ'
+    ];
+    const MONTH_NAMES_EN = [
+        'JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE',
+        'JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'
+    ];
+
+    // Parse "MM.YY" → { year: XXXX, month: 1-12 }
+    function parseMonthYear(token) {
+        const [mm, yy] = token.split('.');
+        const month = parseInt(mm, 10);
+        const year = 2000 + parseInt(yy, 10);
+        return { year, month };
+    }
+
+    // Difference in whole months (end inclusive: count full start month)
+    function diffMonths(start, end) {
+        return (end.year - start.year) * 12 + (end.month - start.month) + 1;
+    }
+
+    // Format total months → human-readable string
+    function formatDuration(totalMonths, lang) {
+        const years  = Math.floor(totalMonths / 12);
+        const months = totalMonths % 12;
+        if (lang === 'ru') {
+            const yStr = years  > 0 ? `${years} ${pluralRu(years, 'ГОД','ГОДА','ЛЕТ')}` : '';
+            const mStr = months > 0 ? `${months} ${pluralRu(months, 'МЕС.','МЕС.','МЕС.')}` : '';
+            return [yStr, mStr].filter(Boolean).join(' И ');
+        } else {
+            const yStr = years  > 0 ? `${years} ${years  === 1 ? 'YEAR' : 'YEARS'}` : '';
+            const mStr = months > 0 ? `${months} ${months === 1 ? 'MONTH' : 'MONTHS'}` : '';
+            return [yStr, mStr].filter(Boolean).join(' & ');
+        }
+    }
+
+    function pluralRu(n, one, few, many) {
+        const mod10 = n % 10, mod100 = n % 100;
+        if (mod10 === 1 && mod100 !== 11) return one;
+        if (mod10 >= 2 && mod10 <= 4 && (mod100 < 10 || mod100 >= 20)) return few;
+        return many;
+    }
+
+    // Build the inner HTML for a single data-time element
+    function buildTimeSpans(dataTime) {
+        const now = new Date();
+        const currentMY = { year: now.getFullYear(), month: now.getMonth() + 1 };
+
+        const [rawStart, rawEnd] = dataTime.split('-');
+        const start = parseMonthYear(rawStart.trim());
+        const isNow = rawEnd.trim().toLowerCase() === 'now';
+        const end   = isNow ? currentMY : parseMonthYear(rawEnd.trim());
+
+        const totalMonths = diffMonths(start, end);
+        const durationRu = formatDuration(totalMonths, 'ru');
+        const durationEn = formatDuration(totalMonths, 'en');
+
+        const startRu = `${MONTH_NAMES_RU[start.month - 1]} ${start.year}`;
+        const startEn = `${MONTH_NAMES_EN[start.month - 1]} ${start.year}`;
+        const endRu   = isNow ? 'СЕЙЧАС' : `${MONTH_NAMES_RU[end.month - 1]} ${end.year}`;
+        const endEn   = isNow ? 'PRESENT' : `${MONTH_NAMES_EN[end.month - 1]} ${end.year}`;
+
+        const labelRu = `${startRu} – ${endRu} (${durationRu})`;
+        const labelEn = `${startEn} – ${endEn} (${durationEn})`;
+
+        return `<span class="lang-ru">${labelRu}</span><span class="lang-en d-none">${labelEn}</span>`;
+    }
+
+    // Build total-experience label
+    function buildTotalSpans(sectionId) {
+        const section  = document.getElementById(sectionId);
+        if (!section) return '';
+
+        const now = new Date();
+        const currentMY = { year: now.getFullYear(), month: now.getMonth() + 1 };
+
+        let totalMonths = 0;
+        section.querySelectorAll('[data-time]').forEach(el => {
+            const [rawStart, rawEnd] = el.dataset.time.split('-');
+            const start   = parseMonthYear(rawStart.trim());
+            const isNow   = rawEnd.trim().toLowerCase() === 'now';
+            const end     = isNow ? currentMY : parseMonthYear(rawEnd.trim());
+            totalMonths  += diffMonths(start, end);
+        });
+
+        const durationRu = formatDuration(totalMonths, 'ru');
+        const durationEn = formatDuration(totalMonths, 'en');
+
+        return `<span class="lang-ru">СУММАРНЫЙ ОПЫТ: ${durationRu}</span><span class="lang-en d-none">TOTAL EXPERIENCE: ${durationEn}</span>`;
+    }
+
+    function initWorkDurations() {
+        // Fill individual data-time elements
+        document.querySelectorAll('[data-time]').forEach(el => {
+            el.innerHTML = buildTimeSpans(el.dataset.time);
+        });
+
+        // Fill total-experience summaries
+        document.querySelectorAll('[data-time-total]').forEach(el => {
+            el.innerHTML = buildTotalSpans(el.dataset.timeTotal);
+        });
+    }
+
     // --- Global Multi-Language Handler ---
     function setLanguage(lang) {
         // Save choice to localStorage
@@ -820,6 +921,7 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize Core Features
+        initWorkDurations(); // must run before initLanguage to generate spans first
         initLanguage();
         initMoonBackground();
 
