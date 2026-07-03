@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Атом изнутри — развёрнутая таблица, орбитали и степени окисления</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0d1e;
+  --ink:#eef1ff;
+  --ink-dim:rgba(238,241,255,.68);
+  --glass:rgba(255,255,255,.055);
+  --glass-strong:rgba(255,255,255,.09);
+  --line:rgba(255,255,255,.14);
+  --s:#38bdf8;   /* s-блок */
+  --p:#fbbf24;   /* p-блок */
+  --d:#f472b6;   /* d-блок */
+  --f:#34d399;   /* f-блок */
+  --violet:#8b5cf6;
+  --radius:24px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Manrope',system-ui,sans-serif;
+  font-size:17px;line-height:1.65;
+  overflow-x:hidden;
+}
+/* ---- фон: северное сияние ---- */
+.aurora{position:fixed;inset:0;z-index:-2;overflow:hidden}
+.aurora span{position:absolute;border-radius:50%;filter:blur(110px);opacity:.5;animation:drift 26s ease-in-out infinite alternate}
+.aurora .a1{width:55vw;height:55vw;background:#5b21b6;top:-18vw;left:-12vw}
+.aurora .a2{width:45vw;height:45vw;background:#0e7490;bottom:-14vw;right:-8vw;animation-delay:-8s}
+.aurora .a3{width:32vw;height:32vw;background:#9d174d;top:40%;left:55%;animation-delay:-16s;opacity:.35}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(6vw,-4vw) scale(1.15)}}
+.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.05;
+  background-image:radial-gradient(rgba(255,255,255,.9) 1px,transparent 1px);background-size:3px 3px}
+
+h1,h2,h3{font-family:'Unbounded',sans-serif;line-height:1.15;letter-spacing:-.01em}
+.mono{font-family:'JetBrains Mono',monospace}
+.wrap{max-width:1280px;margin:0 auto;padding:0 clamp(16px,3vw,40px)}
+
+/* ---- навигация ---- */
+nav{position:sticky;top:14px;z-index:50;display:flex;justify-content:center;padding:0 12px}
+.nav-pill{display:flex;gap:4px;align-items:center;padding:8px 10px;border-radius:999px;
+  background:rgba(12,15,34,.55);border:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 12px 40px rgba(0,0,0,.35)}
+.nav-pill a{color:var(--ink-dim);text-decoration:none;font-size:14px;font-weight:700;padding:8px 14px;border-radius:999px;white-space:nowrap;transition:.2s}
+.nav-pill a:hover,.nav-pill a:focus-visible{color:var(--ink);background:var(--glass-strong)}
+.nav-pill a:focus-visible{outline:2px solid var(--s);outline-offset:2px}
+
+/* ---- герой ---- */
+header{padding:clamp(48px,9vh,110px) 0 40px;text-align:center;position:relative}
+.eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);
+  border:1px solid var(--line);border-radius:999px;padding:7px 16px;background:var(--glass);backdrop-filter:blur(10px);margin-bottom:26px}
+h1{font-size:clamp(30px,5.4vw,64px);font-weight:800;max-width:20ch;margin:0 auto 20px}
+h1 .grad{background:linear-gradient(92deg,var(--s),var(--d) 55%,var(--f));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lead{max-width:62ch;margin:0 auto;color:var(--ink-dim);font-size:clamp(16px,1.6vw,19px)}
+
+/* CSS-атом в герое */
+.hero-atom{position:relative;width:min(320px,70vw);aspect-ratio:1;margin:44px auto 10px}
+.hero-atom .core{position:absolute;top:50%;left:50%;width:34px;height:34px;transform:translate(-50%,-50%);
+  border-radius:50%;background:radial-gradient(circle at 32% 30%,#ffe1f1,var(--d) 60%,#9d2463);
+  box-shadow:0 0 32px rgba(244,114,182,.8),0 0 90px rgba(244,114,182,.35)}
+.orbit{position:absolute;top:50%;left:50%;border:1px solid rgba(255,255,255,.22);border-radius:50%;transform-style:preserve-3d}
+.orbit .e{position:absolute;top:-5px;left:50%;width:10px;height:10px;margin-left:-5px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff,var(--s));box-shadow:0 0 14px var(--s)}
+.o1{width:42%;height:42%;margin:-21% 0 0 -21%;animation:spin 5s linear infinite}
+.o2{width:66%;height:66%;margin:-33% 0 0 -33%;animation:spin 9s linear infinite reverse}
+.o3{width:92%;height:92%;margin:-46% 0 0 -46%;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.legend{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
+.chip{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding:8px 16px;border-radius:999px;
+  background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(10px)}
+.chip i{width:11px;height:11px;border-radius:50%;display:inline-block}
+
+/* ---- секции ---- */
+section{padding:clamp(44px,7vh,90px) 0}
+.sec-head{max-width:760px;margin-bottom:34px}
+.sec-head .tag{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink-dim);letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:12px}
+.sec-head h2{font-size:clamp(24px,3.4vw,40px);font-weight:800;margin-bottom:14px}
+.sec-head p{color:var(--ink-dim)}
+.card{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  box-shadow:0 18px 50px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08)}
+
+/* ---- таблица Менделеева (32 колонки) ---- */
+.table-scroll{overflow-x:auto;padding:22px;border-radius:var(--radius)}
+.ptable{display:grid;grid-template-columns:repeat(32,minmax(36px,1fr));gap:5px;min-width:1240px}
+.cell{position:relative;aspect-ratio:1/1.06;border-radius:9px;border:1px solid transparent;cursor:pointer;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0;
+  font-weight:700;transition:transform .16s ease,box-shadow .16s ease,filter .16s;user-select:none}
+.cell .z{position:absolute;top:3px;left:5px;font-size:8.5px;font-weight:500;opacity:.75;font-family:'JetBrains Mono',monospace}
+.cell .sym{font-size:14.5px;line-height:1}
+.cell:hover,.cell:focus-visible{transform:translateY(-3px) scale(1.08);z-index:3;filter:brightness(1.25)}
+.cell:focus-visible{outline:2px solid #fff;outline-offset:1px}
+.cell.b-s{background:rgba(56,189,248,.16);border-color:rgba(56,189,248,.4);color:#bae6fd}
+.cell.b-p{background:rgba(251,191,36,.14);border-color:rgba(251,191,36,.38);color:#fde68a}
+.cell.b-d{background:rgba(244,114,182,.15);border-color:rgba(244,114,182,.42);color:#fbcfe8}
+.cell.b-f{background:rgba(52,211,153,.14);border-color:rgba(52,211,153,.4);color:#a7f3d0}
+.cell.dim{opacity:.28;filter:grayscale(.6)}
+.table-note{margin-top:16px;color:var(--ink-dim);font-size:15px}
+.block-filter{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.block-filter button{font:inherit;font-size:14px;font-weight:700;color:var(--ink);padding:8px 16px;border-radius:999px;
+  background:var(--glass);border:1px solid var(--line);cursor:pointer;transition:.2s;backdrop-filter:blur(10px)}
+.block-filter button[aria-pressed="true"]{background:var(--glass-strong);border-color:rgba(255,255,255,.4);box-shadow:0 0 0 1px rgba(255,255,255,.2) inset}
+.block-filter button:focus-visible{outline:2px solid var(--s);outline-offset:2px}
+
+/* ---- модалка элемента ---- */
+.modal-bg{position:fixed;inset:0;background:rgba(5,7,18,.6);backdrop-filter:blur(6px);z-index:90;
+  display:none;align-items:center;justify-content:center;padding:18px}
+.modal-bg.open{display:flex}
+.modal{width:min(680px,100%);max-height:88vh;overflow-y:auto;padding:clamp(20px,4vw,34px);position:relative;
+  animation:pop .25s cubic-bezier(.2,.9,.3,1.2)}
+@keyframes pop{from{transform:scale(.92);opacity:0}}
+.modal .close{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);
+  background:var(--glass-strong);color:var(--ink);font-size:18px;cursor:pointer}
+.modal .close:focus-visible{outline:2px solid var(--s)}
+.m-head{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.m-sym{font-family:'Unbounded';font-size:44px;font-weight:800;width:96px;height:96px;border-radius:20px;
+  display:flex;align-items:center;justify-content:center;border:1px solid var(--line)}
+.m-title h3{font-size:24px}
+.m-title .sub{color:var(--ink-dim);font-size:14px;margin-top:4px}
+.m-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+@media(max-width:600px){.m-grid{grid-template-columns:1fr}}
+.m-box{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.m-box .lbl{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:6px;display:block}
+#bohr{width:100%;aspect-ratio:1;border-radius:16px;background:rgba(0,0,0,.25);border:1px solid var(--line)}
+.m-conf{font-size:15px;word-break:break-word}
+
+/* ---- орбитали ---- */
+.orb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.orb-card{padding:20px;display:flex;flex-direction:column;gap:12px}
+.orb-card canvas{width:100%;aspect-ratio:1;border-radius:16px;background:rgba(0,0,0,.28);border:1px solid var(--line);cursor:grab;touch-action:none}
+.orb-card canvas:active{cursor:grabbing}
+.orb-card h3{font-size:18px}
+.orb-card .cap{color:var(--ink-dim);font-size:14.5px}
+.pill-cap{display:inline-block;font-family:'JetBrains Mono';font-size:12.5px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);margin-right:6px}
+.drag-hint{font-size:12.5px;color:var(--ink-dim);text-align:center}
+
+/* лестница энергий */
+.energy{padding:clamp(20px,4vw,34px);margin-top:22px}
+.energy-ladder{display:flex;align-items:flex-end;gap:clamp(6px,1.6vw,18px);height:280px;margin:24px 0 8px}
+.rung{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px;height:100%}
+.rung .bar{width:100%;border-radius:10px 10px 4px 4px;border:1px solid var(--line);position:relative;
+  display:flex;align-items:flex-start;justify-content:center;padding-top:8px;font-family:'JetBrains Mono';font-weight:700;font-size:clamp(11px,1.4vw,15px)}
+.rung .who{font-size:12px;color:var(--ink-dim);text-align:center;line-height:1.3}
+
+/* ---- степени окисления ---- */
+.oxi-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:22px;align-items:start}
+@media(max-width:900px){.oxi-grid{grid-template-columns:1fr}}
+.oxi-lab{padding:clamp(20px,3.6vw,32px)}
+.oxi-lab h3{font-size:20px;margin-bottom:6px}
+.oxi-state{font-family:'Unbounded';font-size:clamp(34px,5vw,52px);font-weight:800;margin:10px 0 2px;
+  background:linear-gradient(92deg,var(--d),var(--p));-webkit-background-clip:text;background-clip:text;color:transparent;transition:.2s}
+.oxi-compound{min-height:52px;color:var(--ink-dim);font-size:15.5px}
+.orb-boxes{display:flex;gap:22px;flex-wrap:wrap;margin:20px 0}
+.orb-set .set-lbl{font-family:'JetBrains Mono';font-size:13px;color:var(--ink-dim);margin-bottom:8px}
+.boxes{display:flex;gap:7px}
+.box{width:46px;height:46px;border-radius:10px;border:1.5px solid var(--line);background:rgba(255,255,255,.04);
+  display:flex;align-items:center;justify-content:center;gap:3px;position:relative;transition:.25s}
+.box.d{border-color:rgba(244,114,182,.5)}
+.box.s{border-color:rgba(56,189,248,.5)}
+.arrow-e{width:3px;height:26px;border-radius:2px;position:relative;transition:.3s;transform-origin:center}
+.arrow-e.up{background:linear-gradient(#fff,var(--s))}
+.arrow-e.dn{background:linear-gradient(var(--p),#fff)}
+.arrow-e::before{content:"";position:absolute;left:50%;width:8px;height:8px;border:2.5px solid currentColor;border-right:0;border-bottom:0}
+.arrow-e.up::before{top:-1px;transform:translateX(-50%) rotate(45deg);color:var(--s)}
+.arrow-e.dn::before{bottom:-1px;transform:translateX(-50%) rotate(225deg);color:var(--p)}
+.arrow-e.gone{opacity:0;transform:translateY(-30px) scale(.6)}
+.oxi-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+.oxi-btns button{font:inherit;font-weight:800;font-size:15px;padding:11px 20px;border-radius:14px;cursor:pointer;transition:.2s;
+  border:1px solid var(--line);color:var(--ink)}
+.btn-remove{background:linear-gradient(120deg,rgba(244,114,182,.28),rgba(139,92,246,.28))}
+.btn-remove:hover{filter:brightness(1.25)}
+.btn-reset{background:var(--glass)}
+.oxi-msg{margin-top:14px;font-size:14.5px;min-height:44px;color:var(--ink-dim)}
+.oxi-msg b{color:var(--f)}
+
+/* точечная карта степеней */
+.dot-chart{padding:clamp(20px,3.6vw,30px)}
+.dot-rows{display:grid;grid-template-columns:auto repeat(10,1fr);gap:6px 8px;align-items:center;font-family:'JetBrains Mono';font-size:13px}
+.dot-rows .rowlbl{color:var(--ink-dim);text-align:right;padding-right:6px}
+.dot-rows .el-lbl{text-align:center;color:#fbcfe8;font-weight:700}
+.dot{width:100%;aspect-ratio:1;max-width:26px;margin:0 auto;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
+.dot.on{background:radial-gradient(circle at 35% 30%,#fff,var(--d));border-color:transparent;box-shadow:0 0 10px rgba(244,114,182,.55)}
+.dot.main{background:radial-gradient(circle at 35% 30%,#fff,var(--p));box-shadow:0 0 10px rgba(251,191,36,.6)}
+.dot-cap{margin-top:16px;font-size:14px;color:var(--ink-dim)}
+
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:26px}
+.why-card{padding:22px}
+.why-card .num{font-family:'JetBrains Mono';font-size:13px;color:var(--ink-dim);display:block;margin-bottom:10px}
+.why-card h3{font-size:17px;margin-bottom:8px}
+.why-card p{font-size:14.5px;color:var(--ink-dim)}
+.why-card b{color:var(--ink)}
+
+footer{padding:60px 0 80px;text-align:center;color:var(--ink-dim);font-size:14px}
+footer .big{font-family:'Unbounded';font-size:clamp(18px,2.6vw,26px);color:var(--ink);margin-bottom:14px}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+<div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+<div class="grain" aria-hidden="true"></div>
+
+<nav aria-label="Разделы страницы">
+  <div class="nav-pill">
+    <a href="#table">Таблица</a>
+    <a href="#orbitals">Орбитали</a>
+    <a href="#oxidation">Степени окисления</a>
+  </div>
+</nav>
+
+<header class="wrap">
+  <span class="eyebrow">Химия · 8–11 класс · интерактив</span>
+  <h1>Атом изнутри: <span class="grad">орбитали, d-электроны</span> и откуда берутся степени окисления</h1>
+  <p class="lead">Развёрнутая (длиннопериодная) таблица Менделеева, настоящие 3D-облака электронов и лаборатория, где можно «отрывать» электроны у марганца — и смотреть, как меняется степень окисления.</p>
+  <div class="hero-atom" aria-hidden="true">
+    <div class="core"></div>
+    <div class="orbit o1"><span class="e"></span></div>
+    <div class="orbit o2"><span class="e"></span></div>
+    <div class="orbit o3"><span class="e"></span></div>
+  </div>
+  <div class="legend">
+    <span class="chip"><i style="background:var(--s)"></i> s-блок</span>
+    <span class="chip"><i style="background:var(--p)"></i> p-блок</span>
+    <span class="chip"><i style="background:var(--d)"></i> d-блок</span>
+    <span class="chip"><i style="background:var(--f)"></i> f-блок</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+<!-- ================= ТАБЛИЦА ================= -->
+<section id="table">
+  <div class="sec-head">
+    <span class="tag">01 · карта всех элементов</span>
+    <h2>Развёрнутая таблица Менделеева</h2>
+    <p>Это <b>длиннопериодная форма</b>: лантаноиды и актиноиды не вынесены вниз, а стоят на своих законных местах — внутри 6-го и 7-го периодов. Так сразу видно главное: таблица — это просто <b>порядок заполнения орбиталей</b>. Цвет клетки = какая орбиталь заполняется последней. Нажми на любой элемент!</p>
+  </div>
+  <div class="block-filter" role="group" aria-label="Подсветка блоков">
+    <button data-blk="all" aria-pressed="true">Все блоки</button>
+    <button data-blk="s" aria-pressed="false">Только s</button>
+    <button data-blk="p" aria-pressed="false">Только p</button>
+    <button data-blk="d" aria-pressed="false">Только d</button>
+    <button data-blk="f" aria-pressed="false">Только f</button>
+  </div>
+  <div class="card table-scroll">
+    <div class="ptable" id="ptable" role="grid" aria-label="Периодическая таблица, длиннопериодная форма"></div>
+  </div>
+  <p class="table-note">↔ Таблицу можно прокручивать вбок. В каждом периоде число клеток = сколько электронов помещается на новый «этаж»: 2 → 8 → 8 → 18 → 18 → 32 → 32.</p>
+</section>
+
+<!-- модалка -->
+<div class="modal-bg" id="modalBg">
+  <div class="modal card" role="dialog" aria-modal="true" aria-labelledby="mName">
+    <button class="close" id="modalClose" aria-label="Закрыть">✕</button>
+    <div class="m-head">
+      <div class="m-sym" id="mSym">Fe</div>
+      <div class="m-title">
+        <h3 id="mName">Железо</h3>
+        <div class="sub" id="mSub">№ 26 · d-блок · период 4</div>
+      </div>
+    </div>
+    <div class="m-grid">
+      <div>
+        <canvas id="bohr" width="300" height="300" aria-label="Анимация электронных оболочек"></canvas>
+        <p class="drag-hint" style="margin-top:8px">Модель Бора: электроны по оболочкам</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <div class="m-box"><span class="lbl">Электронная конфигурация</span>
+          <div class="m-conf mono" id="mConf"></div></div>
+        <div class="m-box"><span class="lbl">Электроны по оболочкам</span>
+          <div class="m-conf mono" id="mShells"></div></div>
+        <div class="m-box"><span class="lbl">Что это значит</span>
+          <div id="mHint" style="font-size:14.5px;color:var(--ink-dim)"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ОРБИТАЛИ ================= -->
+<section id="orbitals">
+  <div class="sec-head">
+    <span class="tag">02 · где живут электроны</span>
+    <h2>Орбитали — это облака вероятности</h2>
+    <p>Электрон не летает по кругу, как планета. Он «размазан» в пространстве: орбиталь — это область, где его можно поймать с вероятностью ~90%. Ниже — <b>настоящие формы орбиталей</b>, посчитанные по квантовой механике (каждая точка — место, где электрон «бывает»). Покрути их мышкой или пальцем!</p>
+  </div>
+  <div class="orb-grid">
+    <div class="card orb-card">
+      <h3 style="color:var(--s)">s-орбиталь</h3>
+      <canvas id="orbS" aria-label="3D модель s-орбитали"></canvas>
+      <p class="drag-hint">🖐 потяни, чтобы повернуть</p>
+      <p class="cap"><span class="pill-cap">шар</span><span class="pill-cap">макс. 2 e⁻</span> Простейшее облако. Есть на каждом «этаже»: 1s, 2s, 3s…</p>
+    </div>
+    <div class="card orb-card">
+      <h3 style="color:var(--p)">p-орбиталь</h3>
+      <canvas id="orbP" aria-label="3D модель p-орбитали"></canvas>
+      <p class="drag-hint">🖐 потяни, чтобы повернуть</p>
+      <p class="cap"><span class="pill-cap">гантель</span><span class="pill-cap">3 шт × 2 = 6 e⁻</span> Три одинаковые «гантели» вдоль осей x, y, z. Цвета — разные знаки волновой функции.</p>
+    </div>
+    <div class="card orb-card">
+      <h3 style="color:var(--d)">d-орбиталь (d<sub>xy</sub>)</h3>
+      <canvas id="orbDxy" aria-label="3D модель d-орбитали dxy"></canvas>
+      <p class="drag-hint">🖐 потяни, чтобы повернуть</p>
+      <p class="cap"><span class="pill-cap">клевер</span><span class="pill-cap">5 шт × 2 = 10 e⁻</span> Четыре лепестка между осями. Таких «клеверов» четыре из пяти d-орбиталей.</p>
+    </div>
+    <div class="card orb-card">
+      <h3 style="color:var(--d)">d-орбиталь (d<sub>z²</sub>)</h3>
+      <canvas id="orbDz2" aria-label="3D модель d-орбитали dz2"></canvas>
+      <p class="drag-hint">🖐 потяни, чтобы повернуть</p>
+      <p class="cap"><span class="pill-cap">гантель + бублик</span> Пятая d-орбиталь — особенная: гантель вдоль оси z с «пончиком» вокруг талии.</p>
+    </div>
+  </div>
+
+  <div class="card energy">
+    <h3 style="font-size:20px;margin-bottom:6px">Лестница энергий: почему 4s заполняется раньше 3d</h3>
+    <p style="color:var(--ink-dim);font-size:15px">Электроны заселяют орбитали как ступеньки — снизу вверх. Хитрость в том, что ступенька <b class="mono">4s</b> лежит чуть <b>ниже</b>, чем <b class="mono">3d</b>. Поэтому у калия и кальция сначала заполняется 4s, и только потом — от скандия до цинка — десять мест на 3d. Это и рождает d-блок таблицы.</p>
+    <div class="energy-ladder" id="ladder" aria-label="Диаграмма энергий орбиталей"></div>
+    <p class="table-note">Порядок заполнения: 1s → 2s → 2p → 3s → 3p → <b style="color:var(--s)">4s</b> → <b style="color:var(--d)">3d</b> → 4p → …</p>
+  </div>
+</section>
+
+<!-- ================= СТЕПЕНИ ОКИСЛЕНИЯ ================= -->
+<section id="oxidation">
+  <div class="sec-head">
+    <span class="tag">03 · главный фокус d-элементов</span>
+    <h2>Откуда берутся степени окисления — и почему их много</h2>
+    <p>Степень окисления — это условный заряд атома: сколько электронов он отдал (+) или принял (−). У d-элементов на «витрине» атома лежат электроны сразу с <b>двух полок</b> — 4s и 3d, и энергии этих полок почти одинаковы. Поэтому атом может отдавать электроны порциями: два, три, четыре… отсюда целый набор степеней окисления.</p>
+  </div>
+
+  <div class="oxi-grid">
+    <div class="card oxi-lab">
+      <h3>⚗️ Лаборатория: разбираем марганец</h3>
+      <p style="color:var(--ink-dim);font-size:15px">Mn: [Ar] 3d⁵ 4s². Нажимай «Оторвать электрон» — сначала уходят 4s-электроны, потом d-электроны.</p>
+      <div class="oxi-state" id="oxState">0</div>
+      <div class="oxi-compound" id="oxCompound">Нейтральный атом марганца — как в чистом металле Mn.</div>
+      <div class="orb-boxes">
+        <div class="orb-set">
+          <div class="set-lbl" style="color:var(--s)">4s</div>
+          <div class="boxes" id="boxes4s"></div>
+        </div>
+        <div class="orb-set">
+          <div class="set-lbl" style="color:var(--d)">3d</div>
+          <div class="boxes" id="boxes3d"></div>
+        </div>
+      </div>
+      <div class="oxi-btns">
+        <button class="btn-remove" id="btnRemove">⚡ Оторвать электрон</button>
+        <button class="btn-reset" id="btnReset">↺ Вернуть все</button>
+      </div>
+      <p class="oxi-msg" id="oxMsg">Электроны 4s расположены дальше от ядра — их отрывать легче всего.</p>
+    </div>
+
+    <div class="card dot-chart">
+      <h3 style="font-size:18px;margin-bottom:14px">Степени окисления 3d-ряда</h3>
+      <div class="dot-rows" id="dotChart"></div>
+      <p class="dot-cap"><span class="dot on" style="display:inline-block;width:13px;vertical-align:-2px"></span> — встречается, <span class="dot on main" style="display:inline-block;width:13px;vertical-align:-2px"></span> — самая типичная. Максимум растёт до марганца (+7 = все 4s- и 3d-электроны), а потом падает: у железа и дальше d-электроны спариваются и держатся крепче.</p>
+    </div>
+  </div>
+
+  <div class="why-grid">
+    <div class="card why-card">
+      <span class="num">причина 1</span>
+      <h3>Полки 4s и 3d почти на одной высоте</h3>
+      <p>Оторвать электрон с 3d лишь <b>немногим труднее</b>, чем с 4s. Поэтому после «обязательных» двух s-электронов атом может отдавать d-электроны по одному — и каждый шаг даёт новую степень окисления.</p>
+    </div>
+    <div class="card why-card">
+      <span class="num">причина 2</span>
+      <h3>Магия половинной заполненности</h3>
+      <p>Конфигурации <b class="mono">d⁵</b> (по одному электрону на каждой из 5 орбиталей) и <b class="mono">d¹⁰</b> особенно устойчивы. Поэтому Mn²⁺ (d⁵) и Zn²⁺ (d¹⁰) так стабильны, а хром и медь даже «крадут» электрон с 4s: Cr — [Ar]3d⁵4s¹, Cu — [Ar]3d¹⁰4s¹.</p>
+    </div>
+    <div class="card why-card">
+      <span class="num">причина 3</span>
+      <h3>Максимум = все валентные электроны</h3>
+      <p>Высшая степень окисления часто равна <b>номеру группы</b>: Sc +3, Ti +4, V +5, Cr +6, Mn +7. Марганец в KMnO₄ отдал в общее пользование все 7 внешних электронов (2 с 4s и 5 с 3d).</p>
+    </div>
+    <div class="card why-card">
+      <span class="num">причина 4</span>
+      <h3>Разные партнёры — разные степени</h3>
+      <p>С «жадным до электронов» кислородом металл проявляет высокие степени (Mn⁺⁷ в KMnO₄, фиолетовый), а с хлором — низкие (Mn⁺² в MnCl₂, бледно-розовый). Одна и та же d-полка, разные ситуации.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="wrap">
+  <p class="big">Таблица = порядок заполнения орбиталей.<br>Степени окисления = сколько электронов атом готов отдать.</p>
+  <p>Интерактивный конспект по химии · s, p, d, f — четыре формы электронных облаков</p>
+</footer>
+
+<script>
+/* ================= ДАННЫЕ ================= */
+const EL = ["","H Водород","He Гелий","Li Литий","Be Бериллий","B Бор","C Углерод","N Азот","O Кислород","F Фтор","Ne Неон","Na Натрий","Mg Магний","Al Алюминий","Si Кремний","P Фосфор","S Сера","Cl Хлор","Ar Аргон","K Калий","Ca Кальций","Sc Скандий","Ti Титан","V Ванадий","Cr Хром","Mn Марганец","Fe Железо","Co Кобальт","Ni Никель","Cu Медь","Zn Цинк","Ga Галлий","Ge Германий","As Мышьяк","Se Селен","Br Бром","Kr Криптон","Rb Рубидий","Sr Стронций","Y Иттрий","Zr Цирконий","Nb Ниобий","Mo Молибден","Tc Технеций","Ru Рутений","Rh Родий","Pd Палладий","Ag Серебро","Cd Кадмий","In Индий","Sn Олово","Sb Сурьма","Te Теллур","I Иод","Xe Ксенон","Cs Цезий","Ba Барий","La Лантан","Ce Церий","Pr Празеодим","Nd Неодим","Pm Прометий","Sm Самарий","Eu Европий","Gd Гадолиний","Tb Тербий","Dy Диспрозий","Ho Гольмий","Er Эрбий","Tm Тулий","Yb Иттербий","Lu Лютеций","Hf Гафний","Ta Тантал","W Вольфрам","Re Рений","Os Осмий","Ir Иридий","Pt Платина","Au Золото","Hg Ртуть","Tl Таллий","Pb Свинец","Bi Висмут","Po Полоний","At Астат","Rn Радон","Fr Франций","Ra Радий","Ac Актиний","Th Торий","Pa Протактиний","U Уран","Np Нептуний","Pu Плутоний","Am Америций","Cm Кюрий","Bk Берклий","Cf Калифорний","Es Эйнштейний","Fm Фермий","Md Менделевий","No Нобелий","Lr Лоуренсий","Rf Резерфордий","Db Дубний","Sg Сиборгий","Bh Борий","Hs Хассий","Mt Мейтнерий","Ds Дармштадтий","Rg Рентгений","Cn Коперниций","Nh Нихоний","Fl Флеровий","Mc Московий","Lv Ливерморий","Ts Теннессин","Og Оганесон"]
+  .map(s=>{const i=s.indexOf(" ");return i<0?null:{sym:s.slice(0,i),name:s.slice(i+1)}});
+
+/* позиция в 32-колоночной таблице */
+function pos(z){
+  if(z===1)return[1,1]; if(z===2)return[1,32];
+  const per=[[3,10],[11,18],[19,36],[37,54],[55,86],[87,118]];
+  for(let i=0;i<per.length;i++){
+    const[a,b]=per[i],row=i+2;
+    if(z<a||z>b)continue;
+    const idx=z-a,len=b-a+1;
+    if(len===8) return[row, idx<2? idx+1 : 27+(idx-2)];
+    if(len===18){
+      if(idx<2)return[row,idx+1];
+      if(idx<12)return[row,17+(idx-2)];
+      return[row,27+(idx-12)];
+    }
+    if(idx<2)return[row,idx+1];
+    if(idx<16)return[row,3+(idx-2)];
+    if(idx<26)return[row,17+(idx-16)];
+    return[row,27+(idx-26)];
+  }
+}
+function blockOf(z){
+  if(z===2)return"s";
+  const c=pos(z)[1];
+  return c<=2?"s":c<=16?"f":c<=26?"d":"p";
+}
+
+/* электронная конфигурация: правило заполнения + исключения */
+const AUFBAU=[["1s",2],["2s",2],["2p",6],["3s",2],["3p",6],["4s",2],["3d",10],["4p",6],["5s",2],["4d",10],["5p",6],["6s",2],["4f",14],["5d",10],["6p",6],["7s",2],["5f",14],["6d",10],["7p",6]];
+const PATCH={24:{"4s":-1,"3d":1},29:{"4s":-1,"3d":1},41:{"5s":-1,"4d":1},42:{"5s":-1,"4d":1},44:{"5s":-1,"4d":1},45:{"5s":-1,"4d":1},46:{"5s":-2,"4d":2},47:{"5s":-1,"4d":1},57:{"4f":-1,"5d":1},58:{"4f":-1,"5d":1},64:{"4f":-1,"5d":1},78:{"6s":-1,"5d":1},79:{"6s":-1,"5d":1},89:{"5f":-1,"6d":1},90:{"5f":-2,"6d":2},91:{"5f":-1,"6d":1},92:{"5f":-1,"6d":1},93:{"5f":-1,"6d":1},96:{"5f":-1,"6d":1},103:{"6d":-1,"7p":1}};
+function config(z){
+  let left=z,out=[];
+  for(const[orb,cap]of AUFBAU){
+    if(left<=0)break;
+    const n=Math.min(cap,left);
+    out.push([orb,n]); left-=n;
+  }
+  const p=PATCH[z];
+  if(p){
+    const map=new Map(out);
+    for(const[orb,d]of Object.entries(p)) map.set(orb,(map.get(orb)||0)+d);
+    out=[...map].filter(([,n])=>n>0);
+    out.sort((a,b)=>AUFBAU.findIndex(x=>x[0]===a[0])-AUFBAU.findIndex(x=>x[0]===b[0]));
+  }
+  return out;
+}
+const SUP={0:"⁰",1:"¹",2:"²",3:"³",4:"⁴",5:"⁵",6:"⁶",7:"⁷",8:"⁸",9:"⁹"};
+const sup=n=>String(n).split("").map(d=>SUP[d]).join("");
+const NOBLE=[[86,"Rn"],[54,"Xe"],[36,"Kr"],[18,"Ar"],[10,"Ne"],[2,"He"]];
+function confHTML(z){
+  let core="",coreZ=0;
+  for(const[nz,ns]of NOBLE){ if(z>nz){core=`[${ns}] `;coreZ=nz;break;} }
+  const coreOrbs=new Map(config(coreZ)),parts=[];
+  for(const[o,n]of config(z)){
+    const c=coreOrbs.get(o)||0;
+    if(n>c)parts.push(o+sup(n-c));
+  }
+  return core+parts.join(" ");
+}
+function shells(z){
+  const sh={};
+  for(const[o,n]of config(z)){const lvl=o[0];sh[lvl]=(sh[lvl]||0)+n;}
+  return Object.keys(sh).sort().map(k=>sh[k]);
+}
+
+/* ================= ТАБЛИЦА ================= */
+const BLK_NAMES={s:"s-блок",p:"p-блок",d:"d-блок",f:"f-блок"};
+const ptable=document.getElementById("ptable");
+for(let z=1;z<=118;z++){
+  const[row,col]=pos(z),b=blockOf(z),e=EL[z];
+  const btn=document.createElement("button");
+  btn.className=`cell b-${b}`;
+  btn.style.gridRow=row; btn.style.gridColumn=col;
+  btn.dataset.blk=b; btn.dataset.z=z;
+  btn.setAttribute("aria-label",`${e.name}, номер ${z}, ${BLK_NAMES[b]}`);
+  btn.innerHTML=`<span class="z">${z}</span><span class="sym">${e.sym}</span>`;
+  btn.addEventListener("click",()=>openModal(z));
+  ptable.appendChild(btn);
+}
+document.querySelectorAll(".block-filter button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".block-filter button").forEach(x=>x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true");
+    const blk=b.dataset.blk;
+    document.querySelectorAll(".cell").forEach(c=>
+      c.classList.toggle("dim", blk!=="all" && c.dataset.blk!==blk));
+  });
+});
+
+/* ================= МОДАЛКА + модель Бора ================= */
+const modalBg=document.getElementById("modalBg");
+let bohrAnim=null;
+const BLK_HINT={
+  s:"Последней заполняется <b>s-орбиталь</b> — шарик. Такие элементы легко отдают 1–2 внешних электрона, поэтому это активные металлы (кроме H и He).",
+  p:"Последней заполняется <b>p-орбиталь</b> — «гантель». Здесь живут почти все неметаллы: они чаще принимают электроны.",
+  d:"Последней заполняется <b>d-орбиталь</b>. Электроны 4s и (n−1)d близки по энергии — отсюда <b>несколько степеней окисления</b> и яркие цвета соединений.",
+  f:"Последней заполняется <b>f-орбиталь</b> глубоко внутри атома. Снаружи такие элементы почти близнецы — поэтому их так трудно разделять."
+};
+function openModal(z){
+  const e=EL[z],b=blockOf(z),[row]=pos(z);
+  document.getElementById("mSym").textContent=e.sym;
+  const colors={s:"var(--s)",p:"var(--p)",d:"var(--d)",f:"var(--f)"};
+  document.getElementById("mSym").style.color=colors[b];
+  document.getElementById("mSym").style.background=`color-mix(in srgb, ${colors[b]} 14%, transparent)`;
+  document.getElementById("mName").textContent=e.name;
+  document.getElementById("mSub").textContent=`№ ${z} · ${BLK_NAMES[b]} · период ${row}`;
+  document.getElementById("mConf").textContent=confHTML(z);
+  document.getElementById("mShells").textContent=shells(z).join(" · ");
+  document.getElementById("mHint").innerHTML=BLK_HINT[b];
+  modalBg.classList.add("open");
+  document.getElementById("modalClose").focus();
+  startBohr(z);
+}
+function closeModal(){modalBg.classList.remove("open");if(bohrAnim)cancelAnimationFrame(bohrAnim);}
+document.getElementById("modalClose").addEventListener("click",closeModal);
+modalBg.addEventListener("click",e=>{if(e.target===modalBg)closeModal();});
+addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
+
+function startBohr(z){
+  const cv=document.getElementById("bohr"),ctx=cv.getContext("2d");
+  const dpr=Math.min(devicePixelRatio||1,2),S=cv.clientWidth||300;
+  cv.width=S*dpr;cv.height=S*dpr;ctx.scale(dpr,dpr);
+  const sh=shells(z),cx=S/2,cy=S/2,maxR=S/2-14;
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let t=0;
+  function frame(){
+    ctx.clearRect(0,0,S,S);
+    // ядро
+    const g=ctx.createRadialGradient(cx-3,cy-3,1,cx,cy,10);
+    g.addColorStop(0,"#ffe1f1");g.addColorStop(1,"#f472b6");
+    ctx.fillStyle=g;ctx.beginPath();ctx.arc(cx,cy,9,0,7);ctx.fill();
+    ctx.shadowColor="rgba(244,114,182,.8)";ctx.shadowBlur=18;ctx.fill();ctx.shadowBlur=0;
+    sh.forEach((n,i)=>{
+      const r=20+(maxR-20)*(i+1)/sh.length;
+      ctx.strokeStyle="rgba(255,255,255,.18)";ctx.lineWidth=1;
+      ctx.beginPath();ctx.arc(cx,cy,r,0,7);ctx.stroke();
+      const show=Math.min(n,18); // не рисуем сотню точек на одной окружности
+      for(let k=0;k<show;k++){
+        const a=t*(0.4+0.12*i)*(i%2?1:-1)+k*2*Math.PI/show;
+        const x=cx+r*Math.cos(a),y=cy+r*Math.sin(a);
+        ctx.fillStyle="#7dd3fc";
+        ctx.beginPath();ctx.arc(x,y,3.1,0,7);ctx.fill();
+      }
+      if(n>18){ctx.fillStyle="rgba(238,241,255,.7)";ctx.font="10px JetBrains Mono";
+        ctx.fillText(n,cx+r-8,cy-4);}
+    });
+    t+=0.016;
+    if(!reduce) bohrAnim=requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+/* ================= ЛЕСТНИЦА ЭНЕРГИЙ ================= */
+const LADDER=[
+  ["1s",14,"s","H–He"],["2s",30,"s","Li–Be"],["2p",40,"p","B–Ne"],
+  ["3s",52,"s","Na–Mg"],["3p",61,"p","Al–Ar"],
+  ["4s",71,"s","K–Ca ⚡"],["3d",80,"d","Sc–Zn"],["4p",92,"p","Ga–Kr"]
+];
+const ladder=document.getElementById("ladder");
+const BLK_RGBA={s:"rgba(56,189,248,.22)",p:"rgba(251,191,36,.20)",d:"rgba(244,114,182,.22)"};
+const BLK_HEX={s:"#7dd3fc",p:"#fde68a",d:"#fbcfe8"};
+LADDER.forEach(([name,h,b,who])=>{
+  const r=document.createElement("div");r.className="rung";
+  r.innerHTML=`<div class="bar" style="height:${h}%;background:${BLK_RGBA[b]};color:${BLK_HEX[b]}">${name}</div><div class="who">${who}</div>`;
+  ladder.appendChild(r);
+});
+
+/* ================= ЛАБОРАТОРИЯ МАРГАНЦА ================= */
+const b4s=document.getElementById("boxes4s"),b3d=document.getElementById("boxes3d");
+b4s.innerHTML=`<div class="box s"><span class="arrow-e up" data-i="1"></span><span class="arrow-e dn" data-i="0"></span></div>`;
+b3d.innerHTML=[2,3,4,5,6].map(i=>`<div class="box d"><span class="arrow-e up" data-i="${i}"></span></div>`).join("");
+const OX_INFO={
+  0:["Нейтральный атом марганца — как в чистом металле Mn.","Электроны 4s расположены дальше от ядра — их отрывать легче всего."],
+  1:["Mn⁺ — в химии почти не встречается.","Атом «на полпути»: одному 4s-электрону одиноко, состояние неустойчивое."],
+  2:["Mn²⁺ — как в MnCl₂ (бледно-розовые растворы).","<b>Оба 4s ушли, осталось ровно d⁵ — по одному электрону на каждой d-орбитали. Половинная заполненность = суперустойчивость!</b>"],
+  3:["Mn³⁺ — как в оксиде Mn₂O₃.","Начали отрывать d-электроны. Это труднее: нужен сильный окислитель."],
+  4:["Mn⁴⁺ — как в MnO₂, чёрной «начинке» батареек.","Каждый следующий электрон держится крепче: ион уже заряжен и не хочет отдавать ещё."],
+  5:["Mn⁵⁺ — редкий гость (манганаты(V), синие).","Промежуточные степени часто неустойчивы и распадаются на соседние."],
+  6:["Mn⁶⁺ — как в зелёном манганате K₂MnO₄.","Остался один d-электрон. Такое возможно только рядом с кислородом — чемпионом по оттягиванию электронов."],
+  7:["Mn⁷⁺ — как в фиолетовой «марганцовке» KMnO₄!","<b>Все 7 валентных электронов (2 с 4s + 5 с 3d) отданы. Высшая степень = номер группы. Дальше некуда: глубже лежит прочный остов аргона.</b>"]
+};
+let removed=0;
+function updateOxi(){
+  document.getElementById("oxState").textContent=removed===0?"0":"+"+removed;
+  document.getElementById("oxCompound").textContent=OX_INFO[removed][0];
+  document.getElementById("oxMsg").innerHTML=OX_INFO[removed][1];
+  document.querySelectorAll(".arrow-e").forEach(a=>{
+    a.classList.toggle("gone",+a.dataset.i<removed);
+  });
+  document.getElementById("btnRemove").disabled=removed>=7;
+  document.getElementById("btnRemove").style.opacity=removed>=7?".4":"1";
+}
+document.getElementById("btnRemove").addEventListener("click",()=>{if(removed<7){removed++;updateOxi();}});
+document.getElementById("btnReset").addEventListener("click",()=>{removed=0;updateOxi();});
+updateOxi();
+
+/* ================= ТОЧЕЧНАЯ КАРТА СТЕПЕНЕЙ ================= */
+const OXMAP=[
+  ["Sc",[3],3],["Ti",[2,3,4],4],["V",[2,3,4,5],5],["Cr",[2,3,6],3],["Mn",[2,3,4,6,7],2],
+  ["Fe",[2,3],3],["Co",[2,3],2],["Ni",[2,3],2],["Cu",[1,2],2],["Zn",[2],2]
+];
+const chart=document.getElementById("dotChart");
+let html=`<div></div>`+OXMAP.map(([s])=>`<div class="el-lbl">${s}</div>`).join("");
+for(let st=7;st>=1;st--){
+  html+=`<div class="rowlbl">+${st}</div>`;
+  for(const[,states,main]of OXMAP){
+    const on=states.includes(st);
+    html+=`<div class="dot ${on?"on":""} ${on&&st===main?"main":""}"></div>`;
+  }
+}
+chart.innerHTML=html;
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============ 3D-ОРБИТАЛИ: облака точек из |ψ|² ============ */
+(function(){
+  if(typeof THREE==="undefined")return; // нет сети — страница работает без 3D
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // волновые функции водородоподобного атома (без нормировки — важна только форма)
+  const PSI={
+    s:   {f:p=>Math.exp(-Math.hypot(p.x,p.y,p.z)),                 R:5,  cPos:0x38bdf8,cNeg:0x38bdf8},
+    p:   {f:p=>p.z*Math.exp(-Math.hypot(p.x,p.y,p.z)/2),           R:11, cPos:0xfbbf24,cNeg:0x818cf8},
+    dxy: {f:p=>p.x*p.y*Math.exp(-Math.hypot(p.x,p.y,p.z)/3),       R:20, cPos:0xf472b6,cNeg:0x34d399},
+    dz2: {f:p=>{const r2=p.x*p.x+p.y*p.y+p.z*p.z;
+                return(3*p.z*p.z-r2)*Math.exp(-Math.sqrt(r2)/3);}, R:22, cPos:0xf472b6,cNeg:0x34d399}
+  };
+
+  function sampleCloud(spec,N){
+    const{f,R}=spec;
+    // оценим максимум |ψ|²
+    let max=0;const tmp={x:0,y:0,z:0};
+    for(let i=0;i<30000;i++){
+      tmp.x=(Math.random()*2-1)*R;tmp.y=(Math.random()*2-1)*R;tmp.z=(Math.random()*2-1)*R;
+      const v=f(tmp);max=Math.max(max,v*v);
+    }
+    max*=1.05;
+    const pts=new Float32Array(N*3),cols=new Float32Array(N*3);
+    const cP=new THREE.Color(spec.cPos),cN=new THREE.Color(spec.cNeg),white=new THREE.Color(0xffffff);
+    let i=0,guard=0;
+    while(i<N&&guard<N*400){
+      guard++;
+      const x=(Math.random()*2-1)*R,y=(Math.random()*2-1)*R,z=(Math.random()*2-1)*R;
+      const psi=f({x,y,z}),d=psi*psi/max;
+      if(Math.random()<d){
+        pts[i*3]=x;pts[i*3+1]=y;pts[i*3+2]=z;
+        const base=(psi>=0?cP:cN).clone().lerp(white,Math.min(d*0.8,0.55));
+        cols[i*3]=base.r;cols[i*3+1]=base.g;cols[i*3+2]=base.b;
+        i++;
+      }
+    }
+    return{pts:pts.subarray(0,i*3),cols:cols.subarray(0,i*3)};
+  }
+
+  const viewers=[];
+  function makeViewer(canvasId,specKey){
+    const canvas=document.getElementById(canvasId);
+    if(!canvas)return;
+    const spec=PSI[specKey];
+    const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+    const scene=new THREE.Scene();
+    const cam=new THREE.PerspectiveCamera(42,1,0.1,400);
+    cam.position.set(0,0,spec.R*2.6);
+
+    const{pts,cols}=sampleCloud(spec,5200);
+    const geo=new THREE.BufferGeometry();
+    geo.setAttribute("position",new THREE.BufferAttribute(pts,3));
+    geo.setAttribute("color",new THREE.BufferAttribute(cols,3));
+    const mat=new THREE.PointsMaterial({size:spec.R*0.028,vertexColors:true,
+      transparent:true,opacity:0.85,sizeAttenuation:true,depthWrite:false,
+      blending:THREE.AdditiveBlending});
+    const group=new THREE.Group();
+    group.add(new THREE.Points(geo,mat));
+    // ядро
+    const nuc=new THREE.Mesh(new THREE.SphereGeometry(spec.R*0.035,16,16),
+      new THREE.MeshBasicMaterial({color:0xffffff}));
+    group.add(nuc);
+    group.rotation.x=0.45;
+    scene.add(group);
+
+    // вращение перетаскиванием
+    let drag=false,px=0,py=0,vx=0.004,userSpin=0;
+    canvas.addEventListener("pointerdown",e=>{drag=true;px=e.clientX;py=e.clientY;canvas.setPointerCapture(e.pointerId);});
+    canvas.addEventListener("pointermove",e=>{
+      if(!drag)return;
+      group.rotation.y+=(e.clientX-px)*0.008;
+      group.rotation.x+=(e.clientY-py)*0.008;
+      px=e.clientX;py=e.clientY;userSpin=1;
+    });
+    canvas.addEventListener("pointerup",()=>drag=false);
+    canvas.addEventListener("pointercancel",()=>drag=false);
+
+    function resize(){
+      const w=canvas.clientWidth||280;
+      renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+      renderer.setSize(w,w,false);
+      cam.aspect=1;cam.updateProjectionMatrix();
+    }
+    resize();
+    addEventListener("resize",resize);
+    viewers.push({renderer,scene,cam,group,canvas,get drag(){return drag},vx});
+  }
+
+  makeViewer("orbS","s");
+  makeViewer("orbP","p");
+  makeViewer("orbDxy","dxy");
+  makeViewer("orbDz2","dz2");
+
+  // общий цикл: рендерим только видимые канвасы
+  const visible=new Set();
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    e.isIntersecting?visible.add(e.target):visible.delete(e.target);
+  }),{rootMargin:"80px"});
+  viewers.forEach(v=>io.observe(v.canvas));
+
+  function loop(){
+    for(const v of viewers){
+      if(!visible.has(v.canvas))continue;
+      if(!v.drag&&!reduce)v.group.rotation.y+=0.004;
+      v.renderer.render(v.scene,v.cam);
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+</script>
+</body>
+</html>
