@@ -6,21 +6,30 @@
 <title>Атом изнутри — развёрнутая таблица, орбитали и степени окисления</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Manrope:wght@400;500;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#0a0d1e;
-  --ink:#eef1ff;
-  --ink-dim:rgba(238,241,255,.68);
-  --glass:rgba(255,255,255,.055);
-  --glass-strong:rgba(255,255,255,.09);
-  --line:rgba(255,255,255,.14);
-  --s:#38bdf8;   /* s-блок */
-  --p:#fbbf24;   /* p-блок */
-  --d:#f472b6;   /* d-блок */
-  --f:#34d399;   /* f-блок */
+  --bg:#F7F5FF;
+  --ink:#332C4B;
+  --ink-dim:#6F6A8A;
+  --card:#FFFFFF;
+  --glass:#FFFFFF;
+  --glass-strong:#F0EBFF;
+  --line:#E8E4F6;
+  --soft:0 14px 36px rgba(124,92,252,.10),0 3px 10px rgba(124,92,252,.06);
+  --soft-sm:0 6px 18px rgba(124,92,252,.10);
+  --s:#0E9BE0;  --s-bg:#DFF3FF; --s-bd:#AEDFF9;   /* s-блок */
+  --p:#DD8500;  --p-bg:#FFF1D4; --p-bd:#F8DC9E;   /* p-блок */
+  --d:#E0559D;  --d-bg:#FDE4F1; --d-bd:#F6BEDB;   /* d-блок */
+  --f:#0FA97B;  --f-bg:#DDF7EC; --f-bd:#AEE9D2;   /* f-блок */
+  --accent:#7C5CFC;
+  --accent-soft:#EFEAFF;
+  --accent-bd:#CFC0FF;
+  --coral:#FF7E6B;
+  --panel:#191436;        /* тёмная сцена для 3D-облаков */
+  --panel-line:#2A2352;
   --violet:#8b5cf6;
-  --radius:24px;
+  --radius:26px;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -28,48 +37,49 @@ body{
   background:var(--bg);
   color:var(--ink);
   font-family:'Manrope',system-ui,sans-serif;
-  font-size:17px;line-height:1.65;
+  font-size:17px;line-height:1.6;
   overflow-x:hidden;
 }
-/* ---- фон: северное сияние ---- */
+/* ---- фон: мягкие пастельные блобы ---- */
 .aurora{position:fixed;inset:0;z-index:-2;overflow:hidden}
-.aurora span{position:absolute;border-radius:50%;filter:blur(110px);opacity:.5;animation:drift 26s ease-in-out infinite alternate}
-.aurora .a1{width:55vw;height:55vw;background:#5b21b6;top:-18vw;left:-12vw}
-.aurora .a2{width:45vw;height:45vw;background:#0e7490;bottom:-14vw;right:-8vw;animation-delay:-8s}
-.aurora .a3{width:32vw;height:32vw;background:#9d174d;top:40%;left:55%;animation-delay:-16s;opacity:.35}
-@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(6vw,-4vw) scale(1.15)}}
-.grain{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.05;
-  background-image:radial-gradient(rgba(255,255,255,.9) 1px,transparent 1px);background-size:3px 3px}
+.aurora span{position:absolute;filter:blur(70px);opacity:.55;animation:drift 30s ease-in-out infinite alternate;
+  border-radius:58% 42% 55% 45%/50% 58% 42% 50%}
+.aurora .a1{width:48vw;height:44vw;background:#DDD0FF;top:-16vw;left:-10vw}
+.aurora .a2{width:40vw;height:38vw;background:#C4F0E2;bottom:-14vw;right:-8vw;animation-delay:-10s}
+.aurora .a3{width:30vw;height:28vw;background:#FFE1D2;top:38%;left:58%;animation-delay:-20s;opacity:.5}
+@keyframes drift{from{transform:translate(0,0) scale(1) rotate(0)}to{transform:translate(5vw,-3vw) scale(1.12) rotate(8deg)}}
+.grain{display:none}
 
-h1,h2,h3{font-family:'Unbounded',sans-serif;line-height:1.15;letter-spacing:-.01em}
+h1,h2,h3{font-family:'Nunito',sans-serif;line-height:1.18;letter-spacing:-.01em}
 .mono{font-family:'JetBrains Mono',monospace}
 .wrap{max-width:1280px;margin:0 auto;padding:0 clamp(16px,3vw,40px)}
 
 /* ---- навигация ---- */
 nav{position:sticky;top:14px;z-index:50;display:flex;justify-content:center;padding:0 12px}
 .nav-pill{display:flex;gap:4px;align-items:center;padding:8px 10px;border-radius:999px;
-  background:rgba(12,15,34,.55);border:1px solid var(--line);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  box-shadow:0 12px 40px rgba(0,0,0,.35)}
+  background:rgba(255,255,255,.85);border:1px solid var(--line);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  box-shadow:var(--soft);max-width:100%;overflow-x:auto;scrollbar-width:none}
+.nav-pill::-webkit-scrollbar{display:none}
 .nav-pill a{color:var(--ink-dim);text-decoration:none;font-size:14px;font-weight:700;padding:8px 14px;border-radius:999px;white-space:nowrap;transition:.2s}
-.nav-pill a:hover,.nav-pill a:focus-visible{color:var(--ink);background:var(--glass-strong)}
-.nav-pill a:focus-visible{outline:2px solid var(--s);outline-offset:2px}
+.nav-pill a:hover,.nav-pill a:focus-visible{color:var(--accent);background:var(--accent-soft)}
+.nav-pill a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* ---- герой ---- */
 header{padding:clamp(48px,9vh,110px) 0 40px;text-align:center;position:relative}
 .eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-dim);
-  border:1px solid var(--line);border-radius:999px;padding:7px 16px;background:var(--glass);backdrop-filter:blur(10px);margin-bottom:26px}
-h1{font-size:clamp(30px,5.4vw,64px);font-weight:800;max-width:20ch;margin:0 auto 20px}
-h1 .grad{background:linear-gradient(92deg,var(--s),var(--d) 55%,var(--f));-webkit-background-clip:text;background-clip:text;color:transparent}
+  border:1px solid var(--line);border-radius:999px;padding:7px 16px;background:var(--card);box-shadow:var(--soft-sm);margin-bottom:26px}
+h1{font-size:clamp(30px,5.4vw,62px);font-weight:900;max-width:20ch;margin:0 auto 20px}
+.grad{background:linear-gradient(92deg,var(--accent),var(--d) 55%,var(--f));-webkit-background-clip:text;background-clip:text;color:transparent}
 .lead{max-width:62ch;margin:0 auto;color:var(--ink-dim);font-size:clamp(16px,1.6vw,19px)}
 
 /* CSS-атом в герое */
 .hero-atom{position:relative;width:min(320px,70vw);aspect-ratio:1;margin:44px auto 10px}
 .hero-atom .core{position:absolute;top:50%;left:50%;width:34px;height:34px;transform:translate(-50%,-50%);
-  border-radius:50%;background:radial-gradient(circle at 32% 30%,#ffe1f1,var(--d) 60%,#9d2463);
-  box-shadow:0 0 32px rgba(244,114,182,.8),0 0 90px rgba(244,114,182,.35)}
-.orbit{position:absolute;top:50%;left:50%;border:1px solid rgba(255,255,255,.22);border-radius:50%;transform-style:preserve-3d}
+  border-radius:50%;background:radial-gradient(circle at 32% 30%,#ffe1f1,#F472B6 60%,#DB5A97);
+  box-shadow:0 10px 26px rgba(224,85,157,.35)}
+.orbit{position:absolute;top:50%;left:50%;border:1.5px solid rgba(124,92,252,.22);border-radius:50%;transform-style:preserve-3d}
 .orbit .e{position:absolute;top:-5px;left:50%;width:10px;height:10px;margin-left:-5px;border-radius:50%;
-  background:radial-gradient(circle at 35% 30%,#fff,var(--s));box-shadow:0 0 14px var(--s)}
+  background:radial-gradient(circle at 35% 30%,#fff,#38bdf8);box-shadow:0 4px 10px rgba(14,155,224,.4)}
 .o1{width:42%;height:42%;margin:-21% 0 0 -21%;animation:spin 5s linear infinite}
 .o2{width:66%;height:66%;margin:-33% 0 0 -33%;animation:spin 9s linear infinite reverse}
 .o3{width:92%;height:92%;margin:-46% 0 0 -46%;animation:spin 14s linear infinite}
@@ -77,78 +87,80 @@ h1 .grad{background:linear-gradient(92deg,var(--s),var(--d) 55%,var(--f));-webki
 
 .legend{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px}
 .chip{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;padding:8px 16px;border-radius:999px;
-  background:var(--glass);border:1px solid var(--line);backdrop-filter:blur(10px)}
+  background:var(--card);border:1px solid var(--line);box-shadow:var(--soft-sm)}
 .chip i{width:11px;height:11px;border-radius:50%;display:inline-block}
 
 /* ---- секции ---- */
 section{padding:clamp(44px,7vh,90px) 0}
 .sec-head{max-width:760px;margin-bottom:34px}
-.sec-head .tag{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--ink-dim);letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:12px}
-.sec-head h2{font-size:clamp(24px,3.4vw,40px);font-weight:800;margin-bottom:14px}
+.sec-head .tag{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--accent);letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:12px}
+.sec-head h2{font-size:clamp(24px,3.4vw,40px);font-weight:900;margin-bottom:14px}
 .sec-head p{color:var(--ink-dim)}
-.card{background:var(--glass);border:1px solid var(--line);border-radius:var(--radius);
-  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
-  box-shadow:0 18px 50px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.08)}
+.sec-head p b{color:var(--ink)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--soft)}
 
 /* ---- таблица Менделеева (32 колонки) ---- */
 .table-scroll{overflow-x:auto;padding:22px;border-radius:var(--radius)}
 .ptable{display:grid;grid-template-columns:repeat(32,minmax(36px,1fr));gap:5px;min-width:1240px}
-.cell{position:relative;aspect-ratio:1/1.06;border-radius:9px;border:1px solid transparent;cursor:pointer;
+.cell{position:relative;aspect-ratio:1/1.06;border-radius:10px;border:1px solid transparent;cursor:pointer;
   display:flex;flex-direction:column;justify-content:center;align-items:center;gap:0;
   font-weight:700;transition:transform .16s ease,box-shadow .16s ease,filter .16s;user-select:none}
-.cell .z{position:absolute;top:3px;left:5px;font-size:8.5px;font-weight:500;opacity:.75;font-family:'JetBrains Mono',monospace}
+.cell .z{position:absolute;top:3px;left:5px;font-size:8.5px;font-weight:500;opacity:.7;font-family:'JetBrains Mono',monospace}
 .cell .sym{font-size:14.5px;line-height:1}
-.cell:hover,.cell:focus-visible{transform:translateY(-3px) scale(1.08);z-index:3;filter:brightness(1.25)}
-.cell:focus-visible{outline:2px solid #fff;outline-offset:1px}
-.cell.b-s{background:rgba(56,189,248,.16);border-color:rgba(56,189,248,.4);color:#bae6fd}
-.cell.b-p{background:rgba(251,191,36,.14);border-color:rgba(251,191,36,.38);color:#fde68a}
-.cell.b-d{background:rgba(244,114,182,.15);border-color:rgba(244,114,182,.42);color:#fbcfe8}
-.cell.b-f{background:rgba(52,211,153,.14);border-color:rgba(52,211,153,.4);color:#a7f3d0}
-.cell.dim{opacity:.28;filter:grayscale(.6)}
+.cell:hover,.cell:focus-visible{transform:translateY(-3px) scale(1.08);z-index:3;box-shadow:var(--soft-sm)}
+.cell:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.cell.b-s{background:var(--s-bg);border-color:var(--s-bd);color:var(--s)}
+.cell.b-p{background:var(--p-bg);border-color:var(--p-bd);color:var(--p)}
+.cell.b-d{background:var(--d-bg);border-color:var(--d-bd);color:var(--d)}
+.cell.b-f{background:var(--f-bg);border-color:var(--f-bd);color:var(--f)}
+.cell.dim{opacity:.3;filter:grayscale(.7)}
 .table-note{margin-top:16px;color:var(--ink-dim);font-size:15px}
 .block-filter{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
-.block-filter button{font:inherit;font-size:14px;font-weight:700;color:var(--ink);padding:8px 16px;border-radius:999px;
-  background:var(--glass);border:1px solid var(--line);cursor:pointer;transition:.2s;backdrop-filter:blur(10px)}
-.block-filter button[aria-pressed="true"]{background:var(--glass-strong);border-color:rgba(255,255,255,.4);box-shadow:0 0 0 1px rgba(255,255,255,.2) inset}
-.block-filter button:focus-visible{outline:2px solid var(--s);outline-offset:2px}
+.block-filter button{font:inherit;font-size:14px;font-weight:700;color:var(--ink-dim);padding:8px 16px;border-radius:999px;
+  background:var(--card);border:1px solid var(--line);cursor:pointer;transition:.2s;box-shadow:var(--soft-sm)}
+.block-filter button:hover{color:var(--ink)}
+.block-filter button[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent-bd);color:var(--accent)}
+.block-filter button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* ---- модалка элемента ---- */
-.modal-bg{position:fixed;inset:0;background:rgba(5,7,18,.6);backdrop-filter:blur(6px);z-index:90;
+.modal-bg{position:fixed;inset:0;background:rgba(51,44,75,.4);backdrop-filter:blur(6px);z-index:90;
   display:none;align-items:center;justify-content:center;padding:18px}
 .modal-bg.open{display:flex}
 .modal{width:min(680px,100%);max-height:88vh;overflow-y:auto;padding:clamp(20px,4vw,34px);position:relative;
   animation:pop .25s cubic-bezier(.2,.9,.3,1.2)}
 @keyframes pop{from{transform:scale(.92);opacity:0}}
 .modal .close{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;border:1px solid var(--line);
-  background:var(--glass-strong);color:var(--ink);font-size:18px;cursor:pointer}
-.modal .close:focus-visible{outline:2px solid var(--s)}
+  background:var(--card);color:var(--ink-dim);font-size:18px;cursor:pointer;box-shadow:var(--soft-sm);transition:.2s}
+.modal .close:hover{color:var(--ink);background:var(--accent-soft)}
+.modal .close:focus-visible{outline:2px solid var(--accent)}
 .m-head{display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
-.m-sym{font-family:'Unbounded';font-size:44px;font-weight:800;width:96px;height:96px;border-radius:20px;
+.m-sym{font-family:'Nunito';font-size:44px;font-weight:900;width:96px;height:96px;border-radius:24px;
   display:flex;align-items:center;justify-content:center;border:1px solid var(--line)}
 .m-title h3{font-size:24px}
 .m-title .sub{color:var(--ink-dim);font-size:14px;margin-top:4px}
 .m-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
 @media(max-width:600px){.m-grid{grid-template-columns:1fr}}
-.m-box{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:16px;padding:14px 16px}
+.m-box{background:#FAF8FF;border:1px solid var(--line);border-radius:18px;padding:14px 16px}
 .m-box .lbl{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:6px;display:block}
-#bohr{width:100%;aspect-ratio:1;border-radius:16px;background:rgba(0,0,0,.25);border:1px solid var(--line)}
+#bohr{width:100%;aspect-ratio:1;border-radius:18px;background:radial-gradient(circle at 50% 42%,#241C4F,var(--panel));border:1px solid var(--panel-line)}
 .m-conf{font-size:15px;word-break:break-word}
 
 /* ---- орбитали ---- */
 .orb-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
 .orb-card{padding:20px;display:flex;flex-direction:column;gap:12px}
-.orb-card canvas{width:100%;aspect-ratio:1;border-radius:16px;background:rgba(0,0,0,.28);border:1px solid var(--line);cursor:grab;touch-action:none}
+.orb-card canvas{width:100%;aspect-ratio:1;border-radius:18px;background:radial-gradient(circle at 50% 42%,#241C4F,var(--panel));border:1px solid var(--panel-line);cursor:grab;touch-action:none}
 .orb-card canvas:active{cursor:grabbing}
 .orb-card h3{font-size:18px}
 .orb-card .cap{color:var(--ink-dim);font-size:14.5px}
-.pill-cap{display:inline-block;font-family:'JetBrains Mono';font-size:12.5px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.05);margin-right:6px}
+.pill-cap{display:inline-block;font-family:'JetBrains Mono';font-size:12.5px;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:#FAF8FF;margin-right:6px;color:var(--ink)}
 .drag-hint{font-size:12.5px;color:var(--ink-dim);text-align:center}
 
 /* лестница энергий */
 .energy{padding:clamp(20px,4vw,34px);margin-top:22px}
 .energy-ladder{display:flex;align-items:flex-end;gap:clamp(6px,1.6vw,18px);height:280px;margin:24px 0 8px}
 .rung{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px;height:100%}
-.rung .bar{width:100%;border-radius:10px 10px 4px 4px;border:1px solid var(--line);position:relative;
+.rung .bar{width:100%;border-radius:12px 12px 6px 6px;border:1px solid var(--line);position:relative;
   display:flex;align-items:flex-start;justify-content:center;padding-top:8px;font-family:'JetBrains Mono';font-weight:700;font-size:clamp(11px,1.4vw,15px)}
 .rung .who{font-size:12px;color:var(--ink-dim);text-align:center;line-height:1.3}
 
@@ -157,29 +169,32 @@ section{padding:clamp(44px,7vh,90px) 0}
 @media(max-width:900px){.oxi-grid{grid-template-columns:1fr}}
 .oxi-lab{padding:clamp(20px,3.6vw,32px)}
 .oxi-lab h3{font-size:20px;margin-bottom:6px}
-.oxi-state{font-family:'Unbounded';font-size:clamp(34px,5vw,52px);font-weight:800;margin:10px 0 2px;
+.oxi-state{font-family:'Nunito';font-size:clamp(34px,5vw,52px);font-weight:900;margin:10px 0 2px;
   background:linear-gradient(92deg,var(--d),var(--p));-webkit-background-clip:text;background-clip:text;color:transparent;transition:.2s}
 .oxi-compound{min-height:52px;color:var(--ink-dim);font-size:15.5px}
 .orb-boxes{display:flex;gap:22px;flex-wrap:wrap;margin:20px 0}
-.orb-set .set-lbl{font-family:'JetBrains Mono';font-size:13px;color:var(--ink-dim);margin-bottom:8px}
+.orb-set .set-lbl{font-family:'JetBrains Mono';font-size:13px;font-weight:700;margin-bottom:8px}
 .boxes{display:flex;gap:7px}
-.box{width:46px;height:46px;border-radius:10px;border:1.5px solid var(--line);background:rgba(255,255,255,.04);
+.box{width:46px;height:46px;border-radius:12px;border:1.5px solid var(--line);background:#FAF8FF;
   display:flex;align-items:center;justify-content:center;gap:3px;position:relative;transition:.25s}
-.box.d{border-color:rgba(244,114,182,.5)}
-.box.s{border-color:rgba(56,189,248,.5)}
+.box.s{border-color:var(--s-bd);background:var(--s-bg)}
+.box.p{border-color:var(--p-bd);background:var(--p-bg)}
+.box.d{border-color:var(--d-bd);background:var(--d-bg)}
+.box.f{border-color:var(--f-bd);background:var(--f-bg)}
 .arrow-e{width:3px;height:26px;border-radius:2px;position:relative;transition:.3s;transform-origin:center}
-.arrow-e.up{background:linear-gradient(#fff,var(--s))}
-.arrow-e.dn{background:linear-gradient(var(--p),#fff)}
+.arrow-e.up{background:var(--s)}
+.arrow-e.dn{background:var(--p)}
 .arrow-e::before{content:"";position:absolute;left:50%;width:8px;height:8px;border:2.5px solid currentColor;border-right:0;border-bottom:0}
 .arrow-e.up::before{top:-1px;transform:translateX(-50%) rotate(45deg);color:var(--s)}
 .arrow-e.dn::before{bottom:-1px;transform:translateX(-50%) rotate(225deg);color:var(--p)}
 .arrow-e.gone{opacity:0;transform:translateY(-30px) scale(.6)}
 .oxi-btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
-.oxi-btns button{font:inherit;font-weight:800;font-size:15px;padding:11px 20px;border-radius:14px;cursor:pointer;transition:.2s;
+.oxi-btns button{font:inherit;font-weight:800;font-size:15px;padding:12px 22px;border-radius:999px;cursor:pointer;transition:.2s;
   border:1px solid var(--line);color:var(--ink)}
-.btn-remove{background:linear-gradient(120deg,rgba(244,114,182,.28),rgba(139,92,246,.28))}
-.btn-remove:hover{filter:brightness(1.25)}
-.btn-reset{background:var(--glass)}
+.btn-remove{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 8px 20px rgba(124,92,252,.35)}
+.btn-remove:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.btn-reset{background:var(--card);color:var(--ink-dim);box-shadow:var(--soft-sm)}
+.btn-reset:hover{color:var(--ink)}
 .oxi-msg{margin-top:14px;font-size:14.5px;min-height:44px;color:var(--ink-dim)}
 .oxi-msg b{color:var(--f)}
 
@@ -187,21 +202,66 @@ section{padding:clamp(44px,7vh,90px) 0}
 .dot-chart{padding:clamp(20px,3.6vw,30px)}
 .dot-rows{display:grid;grid-template-columns:auto repeat(10,1fr);gap:6px 8px;align-items:center;font-family:'JetBrains Mono';font-size:13px}
 .dot-rows .rowlbl{color:var(--ink-dim);text-align:right;padding-right:6px}
-.dot-rows .el-lbl{text-align:center;color:#fbcfe8;font-weight:700}
-.dot{width:100%;aspect-ratio:1;max-width:26px;margin:0 auto;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08)}
-.dot.on{background:radial-gradient(circle at 35% 30%,#fff,var(--d));border-color:transparent;box-shadow:0 0 10px rgba(244,114,182,.55)}
-.dot.main{background:radial-gradient(circle at 35% 30%,#fff,var(--p));box-shadow:0 0 10px rgba(251,191,36,.6)}
+.dot-rows .el-lbl{text-align:center;color:var(--d);font-weight:700}
+.dot{width:100%;aspect-ratio:1;max-width:26px;margin:0 auto;border-radius:50%;background:#F1EEFB;border:1px solid var(--line)}
+.dot.on{background:radial-gradient(circle at 35% 30%,#FDE4F1,var(--d));border-color:transparent;box-shadow:0 3px 8px rgba(224,85,157,.35)}
+.dot.main{background:radial-gradient(circle at 35% 30%,#FFF1D4,var(--p));box-shadow:0 3px 8px rgba(221,133,0,.4)}
 .dot-cap{margin-top:16px;font-size:14px;color:var(--ink-dim)}
 
 .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:26px}
 .why-card{padding:22px}
-.why-card .num{font-family:'JetBrains Mono';font-size:13px;color:var(--ink-dim);display:block;margin-bottom:10px}
+.why-card .num{font-family:'JetBrains Mono';font-size:13px;color:var(--accent);display:block;margin-bottom:10px}
 .why-card h3{font-size:17px;margin-bottom:8px}
 .why-card p{font-size:14.5px;color:var(--ink-dim)}
 .why-card b{color:var(--ink)}
 
-footer{padding:60px 0 80px;text-align:center;color:var(--ink-dim);font-size:14px}
-footer .big{font-family:'Unbounded';font-size:clamp(18px,2.6vw,26px);color:var(--ink);margin-bottom:14px}
+/* ---- переключатель Бор/3D в модалке ---- */
+.view-toggle{display:flex;gap:4px;background:#F1EEFB;border:1px solid var(--line);border-radius:999px;padding:4px;margin-bottom:12px;width:max-content;max-width:100%}
+.view-toggle button{font:inherit;font-size:13.5px;font-weight:700;color:var(--ink-dim);padding:7px 14px;border-radius:999px;border:0;background:transparent;cursor:pointer;transition:.2s;white-space:nowrap}
+.view-toggle button[aria-pressed="true"]{background:var(--card);color:var(--accent);box-shadow:var(--soft-sm)}
+.view-toggle button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.atom3d{width:100%;aspect-ratio:1;border-radius:18px;background:radial-gradient(circle at 50% 42%,#241C4F,var(--panel));border:1px solid var(--panel-line);cursor:grab;touch-action:none;display:block}
+.atom3d:active{cursor:grabbing}
+.subshell-menu{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ss-btn{font-family:'JetBrains Mono',monospace;font-size:12.5px;font-weight:700;padding:5px 11px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink-dim);cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:.15s}
+.ss-btn i{width:9px;height:9px;border-radius:50%;display:inline-block;box-shadow:0 0 0 1px rgba(51,44,75,.12) inset}
+.ss-btn:hover{color:var(--ink);background:var(--accent-soft)}
+.ss-btn.active{background:var(--accent-soft);color:var(--ink);border-color:var(--accent-bd)}
+.ss-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.no3d{font-size:13px;color:var(--ink-dim)}
+
+/* ---- лаборатория: выбор элемента + 3D ---- */
+.lab-pick{display:flex;align-items:center;gap:10px;margin:10px 0 12px;flex-wrap:wrap}
+.lab-pick label{font-size:14px;font-weight:700;color:var(--ink-dim)}
+.lab-pick select{font:inherit;font-size:14.5px;font-weight:700;color:var(--ink);background:var(--card);border:1px solid var(--accent-bd);border-radius:999px;padding:8px 16px;cursor:pointer;box-shadow:var(--soft-sm)}
+.lab-pick select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.lab-pick select option,.lab-pick select optgroup{color:var(--ink);background:#fff}
+.lab3d{margin-top:18px}
+.lab3d .drag-hint{margin-top:8px}
+
+/* ---- гибридизация ---- */
+.hyb-tabs{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px}
+.hyb-tabs button{font:inherit;font-size:14.5px;font-weight:800;color:var(--ink-dim);padding:10px 20px;border-radius:999px;background:var(--card);border:1px solid var(--line);cursor:pointer;transition:.2s;box-shadow:var(--soft-sm)}
+.hyb-tabs button:hover{color:var(--ink)}
+.hyb-tabs button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff;box-shadow:0 8px 20px rgba(124,92,252,.35)}
+.hyb-tabs button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hyb-card{padding:clamp(20px,3.6vw,32px)}
+.hyb-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start}
+@media(max-width:820px){.hyb-grid{grid-template-columns:1fr}}
+.hyb-legend{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.hyb-legend .chip{font-size:12.5px;padding:6px 12px;box-shadow:none;background:#FAF8FF}
+.hyb-legend .chip i{box-shadow:0 0 0 1px rgba(51,44,75,.15) inset}
+#hybInfo h3{font-size:22px;margin-bottom:10px}
+#hybInfo .hyb-facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:480px){#hybInfo .hyb-facts{grid-template-columns:1fr}}
+#hybInfo .fact{background:#FAF8FF;border:1px solid var(--line);border-radius:16px;padding:10px 14px}
+#hybInfo .fact .lbl{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim);display:block;margin-bottom:3px}
+#hybInfo .fact b{font-size:16px;color:var(--accent)}
+#hybInfo p{font-size:15px;color:var(--ink-dim)}
+#hybInfo p b{color:var(--ink)}
+
+footer{padding:60px 0 80px !important;text-align:center;font-size:14px}
+footer .big{font-family:'Nunito',sans-serif;font-weight:900;font-size:clamp(18px,2.6vw,26px);margin-bottom:14px}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
@@ -216,14 +276,15 @@ footer .big{font-family:'Unbounded';font-size:clamp(18px,2.6vw,26px);color:var(-
   <div class="nav-pill">
     <a href="#table">Таблица</a>
     <a href="#orbitals">Орбитали</a>
+    <a href="#hybrid">Гибридизация</a>
     <a href="#oxidation">Степени окисления</a>
   </div>
 </nav>
-
+<div class="" style="height: 2rem;"></div>
 <header class="wrap">
   <span class="eyebrow">Химия · 8–11 класс · интерактив</span>
   <h1>Атом изнутри: <span class="grad">орбитали, d-электроны</span> и откуда берутся степени окисления</h1>
-  <p class="lead">Развёрнутая (длиннопериодная) таблица Менделеева, настоящие 3D-облака электронов и лаборатория, где можно «отрывать» электроны у марганца — и смотреть, как меняется степень окисления.</p>
+  <p class="lead">Развёрнутая (длиннопериодная) таблица Менделеева, настоящие 3D-облака электронов, гибридизация углерода и лаборатория, где можно «отрывать» электроны у двух десятков элементов — и смотреть, как меняется степень окисления.</p>
   <div class="hero-atom" aria-hidden="true">
     <div class="core"></div>
     <div class="orbit o1"><span class="e"></span></div>
@@ -273,8 +334,19 @@ footer .big{font-family:'Unbounded';font-size:clamp(18px,2.6vw,26px);color:var(-
     </div>
     <div class="m-grid">
       <div>
-        <canvas id="bohr" width="300" height="300" aria-label="Анимация электронных оболочек"></canvas>
-        <p class="drag-hint" style="margin-top:8px">Модель Бора: электроны по оболочкам</p>
+        <div class="view-toggle" id="mViewToggle" role="group" aria-label="Режим просмотра атома">
+          <button data-view="bohr" aria-pressed="true">Модель Бора</button>
+          <button data-view="orb3d" aria-pressed="false">3D-орбитали</button>
+        </div>
+        <div id="mBohrWrap">
+          <canvas id="bohr" width="300" height="300" aria-label="Анимация электронных оболочек"></canvas>
+          <p class="drag-hint" style="margin-top:8px">Модель Бора: электроны по оболочкам</p>
+        </div>
+        <div id="mOrbWrap" hidden>
+          <canvas id="atomOrb" class="atom3d" aria-label="3D модель всех орбиталей элемента"></canvas>
+          <p class="drag-hint" style="margin-top:8px">🖐 потяни, чтобы повернуть · нажми на орбиталь ниже</p>
+          <div class="subshell-menu" id="mSubshells"></div>
+        </div>
       </div>
       <div style="display:flex;flex-direction:column;gap:14px">
         <div class="m-box"><span class="lbl">Электронная конфигурация</span>
@@ -330,35 +402,63 @@ footer .big{font-family:'Unbounded';font-size:clamp(18px,2.6vw,26px);color:var(-
   </div>
 </section>
 
+<!-- ================= ГИБРИДИЗАЦИЯ ================= -->
+<section id="hybrid">
+  <div class="sec-head">
+    <span class="tag">03 · как углерод строит связи</span>
+    <h2>Гибридизация: три «режима» атома углерода</h2>
+    <p>У углерода четыре валентных электрона (2s² 2p²). Перед тем как построить связи, его орбитали <b>смешиваются</b> — гибридизуются — и выстраиваются в пространстве так, чтобы связи были как можно дальше друг от друга. От числа смешанных орбиталей зависит вся геометрия молекулы. Переключай режимы и крути модель!</p>
+  </div>
+  <div class="hyb-tabs" role="group" aria-label="Тип гибридизации">
+    <button data-h="sp3" aria-pressed="true">sp³ · метан</button>
+    <button data-h="sp2" aria-pressed="false">sp² · этилен</button>
+    <button data-h="sp" aria-pressed="false">sp · ацетилен</button>
+  </div>
+  <div class="card hyb-card">
+    <div class="hyb-grid">
+      <div>
+        <canvas id="hybCanvas" class="atom3d" aria-label="3D модель гибридизации и молекулы"></canvas>
+        <p class="drag-hint">🖐 потяни, чтобы повернуть</p>
+        <div class="hyb-legend">
+          <span class="chip"><i style="background:#b18cff"></i> гибридные орбитали (σ)</span>
+          <span class="chip"><i style="background:#41e0a8"></i> негибридные p (π)</span>
+          <span class="chip"><i style="background:#f5f5ff"></i> атом C</span>
+          <span class="chip"><i style="background:#7dd3fc"></i> атом H</span>
+        </div>
+      </div>
+      <div id="hybInfo"></div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= СТЕПЕНИ ОКИСЛЕНИЯ ================= -->
 <section id="oxidation">
   <div class="sec-head">
-    <span class="tag">03 · главный фокус d-элементов</span>
+    <span class="tag">04 · главный фокус d-элементов</span>
     <h2>Откуда берутся степени окисления — и почему их много</h2>
     <p>Степень окисления — это условный заряд атома: сколько электронов он отдал (+) или принял (−). У d-элементов на «витрине» атома лежат электроны сразу с <b>двух полок</b> — 4s и 3d, и энергии этих полок почти одинаковы. Поэтому атом может отдавать электроны порциями: два, три, четыре… отсюда целый набор степеней окисления.</p>
   </div>
 
   <div class="oxi-grid">
     <div class="card oxi-lab">
-      <h3>⚗️ Лаборатория: разбираем марганец</h3>
-      <p style="color:var(--ink-dim);font-size:15px">Mn: [Ar] 3d⁵ 4s². Нажимай «Оторвать электрон» — сначала уходят 4s-электроны, потом d-электроны.</p>
-      <div class="oxi-state" id="oxState">0</div>
-      <div class="oxi-compound" id="oxCompound">Нейтральный атом марганца — как в чистом металле Mn.</div>
-      <div class="orb-boxes">
-        <div class="orb-set">
-          <div class="set-lbl" style="color:var(--s)">4s</div>
-          <div class="boxes" id="boxes4s"></div>
-        </div>
-        <div class="orb-set">
-          <div class="set-lbl" style="color:var(--d)">3d</div>
-          <div class="boxes" id="boxes3d"></div>
-        </div>
+      <h3>⚗️ Лаборатория: разбираем <span id="labName">марганец</span></h3>
+      <div class="lab-pick">
+        <label for="labSelect">Элемент:</label>
+        <select id="labSelect" aria-label="Выбор элемента для лаборатории"></select>
       </div>
+      <p style="color:var(--ink-dim);font-size:15px" id="labIntro"></p>
+      <div class="oxi-state" id="oxState">0</div>
+      <div class="oxi-compound" id="oxCompound"></div>
+      <div class="orb-boxes" id="orbBoxes"></div>
       <div class="oxi-btns">
         <button class="btn-remove" id="btnRemove">⚡ Оторвать электрон</button>
         <button class="btn-reset" id="btnReset">↺ Вернуть все</button>
       </div>
-      <p class="oxi-msg" id="oxMsg">Электроны 4s расположены дальше от ядра — их отрывать легче всего.</p>
+      <p class="oxi-msg" id="oxMsg"></p>
+      <div class="lab3d">
+        <canvas id="labOrb" class="atom3d" aria-label="3D модель валентных орбиталей выбранного элемента"></canvas>
+        <p class="drag-hint">🖐 валентные орбитали в 3D: при отрыве электронов облака гаснут</p>
+      </div>
     </div>
 
     <div class="card dot-chart">
@@ -394,10 +494,15 @@ footer .big{font-family:'Unbounded';font-size:clamp(18px,2.6vw,26px);color:var(-
 
 </main>
 
-<footer class="wrap">
-  <p class="big">Таблица = порядок заполнения орбиталей.<br>Степени окисления = сколько электронов атом готов отдать.</p>
-  <p>Интерактивный конспект по химии · s, p, d, f — четыре формы электронных облаков</p>
-</footer>
+<div style="background:var(--panel);border-top:1px solid var(--panel-line)">
+  <footer class="wrap">
+    <p class="big grad">Таблица = порядок заполнения орбиталей.<br>Степени окисления = сколько электронов атом готов отдать.</p>
+    <p style="color: var(--s);">Интерактивный конспект по химии · s, p, d, f — четыре формы электронных облаков</p>
+  </footer>
+  <footer style="padding: 1em !important;">
+    <a href="http://bataevk.github.io" style="color: var(--s);">@bataevk</a>
+  </footer>
+</div>
 
 <script>
 /* ================= ДАННЫЕ ================= */
@@ -514,9 +619,28 @@ function openModal(z){
   document.getElementById("mHint").innerHTML=BLK_HINT[b];
   modalBg.classList.add("open");
   document.getElementById("modalClose").focus();
-  startBohr(z);
+  currentZ=z;
+  renderModalView();
 }
-function closeModal(){modalBg.classList.remove("open");if(bohrAnim)cancelAnimationFrame(bohrAnim);}
+/* режим просмотра: модель Бора или 3D-орбитали */
+let currentZ=26, modalMode="bohr";
+function renderModalView(){
+  const is3d=modalMode==="orb3d";
+  document.getElementById("mBohrWrap").hidden=is3d;
+  document.getElementById("mOrbWrap").hidden=!is3d;
+  if(bohrAnim){cancelAnimationFrame(bohrAnim);bohrAnim=null;}
+  if(!is3d){startBohr(currentZ);return;}
+  if(window.ORB3D) window.ORB3D.showAtom(currentZ);
+  else document.getElementById("mSubshells").innerHTML='<span class="no3d">3D-режим недоступен: не загрузилась библиотека Three.js (нужна сеть).</span>';
+}
+document.getElementById("mViewToggle").addEventListener("click",e=>{
+  const b=e.target.closest("button[data-view]");
+  if(!b||b.dataset.view===modalMode)return;
+  modalMode=b.dataset.view;
+  document.querySelectorAll("#mViewToggle button").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));
+  renderModalView();
+});
+function closeModal(){modalBg.classList.remove("open");if(bohrAnim){cancelAnimationFrame(bohrAnim);bohrAnim=null;}}
 document.getElementById("modalClose").addEventListener("click",closeModal);
 modalBg.addEventListener("click",e=>{if(e.target===modalBg)closeModal();});
 addEventListener("keydown",e=>{if(e.key==="Escape")closeModal();});
@@ -562,42 +686,216 @@ const LADDER=[
   ["4s",71,"s","K–Ca ⚡"],["3d",80,"d","Sc–Zn"],["4p",92,"p","Ga–Kr"]
 ];
 const ladder=document.getElementById("ladder");
-const BLK_RGBA={s:"rgba(56,189,248,.22)",p:"rgba(251,191,36,.20)",d:"rgba(244,114,182,.22)"};
-const BLK_HEX={s:"#7dd3fc",p:"#fde68a",d:"#fbcfe8"};
+const BLK_RGBA={s:"#DFF3FF",p:"#FFF1D4",d:"#FDE4F1"};
+const BLK_HEX={s:"#0E9BE0",p:"#DD8500",d:"#E0559D"};
 LADDER.forEach(([name,h,b,who])=>{
   const r=document.createElement("div");r.className="rung";
   r.innerHTML=`<div class="bar" style="height:${h}%;background:${BLK_RGBA[b]};color:${BLK_HEX[b]}">${name}</div><div class="who">${who}</div>`;
   ladder.appendChild(r);
 });
 
-/* ================= ЛАБОРАТОРИЯ МАРГАНЦА ================= */
-const b4s=document.getElementById("boxes4s"),b3d=document.getElementById("boxes3d");
-b4s.innerHTML=`<div class="box s"><span class="arrow-e up" data-i="1"></span><span class="arrow-e dn" data-i="0"></span></div>`;
-b3d.innerHTML=[2,3,4,5,6].map(i=>`<div class="box d"><span class="arrow-e up" data-i="${i}"></span></div>`).join("");
-const OX_INFO={
-  0:["Нейтральный атом марганца — как в чистом металле Mn.","Электроны 4s расположены дальше от ядра — их отрывать легче всего."],
-  1:["Mn⁺ — в химии почти не встречается.","Атом «на полпути»: одному 4s-электрону одиноко, состояние неустойчивое."],
-  2:["Mn²⁺ — как в MnCl₂ (бледно-розовые растворы).","<b>Оба 4s ушли, осталось ровно d⁵ — по одному электрону на каждой d-орбитали. Половинная заполненность = суперустойчивость!</b>"],
-  3:["Mn³⁺ — как в оксиде Mn₂O₃.","Начали отрывать d-электроны. Это труднее: нужен сильный окислитель."],
-  4:["Mn⁴⁺ — как в MnO₂, чёрной «начинке» батареек.","Каждый следующий электрон держится крепче: ион уже заряжен и не хочет отдавать ещё."],
-  5:["Mn⁵⁺ — редкий гость (манганаты(V), синие).","Промежуточные степени часто неустойчивы и распадаются на соседние."],
-  6:["Mn⁶⁺ — как в зелёном манганате K₂MnO₄.","Остался один d-электрон. Такое возможно только рядом с кислородом — чемпионом по оттягиванию электронов."],
-  7:["Mn⁷⁺ — как в фиолетовой «марганцовке» KMnO₄!","<b>Все 7 валентных электронов (2 с 4s + 5 с 3d) отданы. Высшая степень = номер группы. Дальше некуда: глубже лежит прочный остов аргона.</b>"]
+/* ================= ГИБРИДИЗАЦИЯ: вкладки и текст ================= */
+const HYB_INFO={
+  sp3:{t:"sp³ — тетраэдр",geo:"тетраэдр",ang:"109,5°",bonds:"4 σ",mol:"CH₄ — метан",
+    d:`Смешались <b>одна s и три p</b> орбитали → четыре одинаковых гибридных «лепестка». Они расталкиваются в углы тетраэдра — так четыре связи максимально далеки друг от друга. Каждый лепесток перекрывается с 1s-орбиталью водорода «лоб в лоб» — получается прочная <b>σ-связь</b>. π-связей нет.`,
+    ex:"алканы, алмаз, любые одинарные связи C–C и C–H"},
+  sp2:{t:"sp² — плоский треугольник",geo:"треугольник",ang:"120°",bonds:"3 σ + 1 π",mol:"C₂H₄ — этилен",
+    d:`Смешались <b>одна s и две p</b> → три лепестка в одной плоскости под 120°. Третья p-орбиталь <b>не гибридизуется</b>: её «гантель» торчит перпендикулярно плоскости. Боковое перекрытие двух таких p-орбиталей над и под осью C–C даёт <b>π-связь</b> — вторую «нить» двойной связи C=C.`,
+    ex:"алкены, бензол, графит и графен"},
+  sp:{t:"sp — линия",geo:"линейная",ang:"180°",bonds:"2 σ + 2 π",mol:"C₂H₂ — ацетилен",
+    d:`Смешались <b>одна s и одна p</b> → два лепестка, смотрящих в противоположные стороны. Две p-орбитали остались негибридными и перпендикулярны друг другу: они дают <b>две π-связи</b>. Итого между атомами углерода — тройная связь C≡C: одна σ и две π.`,
+    ex:"алкины, углекислый газ CO₂, молекула N₂ (та же идея)"}
 };
-let removed=0;
-function updateOxi(){
-  document.getElementById("oxState").textContent=removed===0?"0":"+"+removed;
-  document.getElementById("oxCompound").textContent=OX_INFO[removed][0];
-  document.getElementById("oxMsg").innerHTML=OX_INFO[removed][1];
-  document.querySelectorAll(".arrow-e").forEach(a=>{
-    a.classList.toggle("gone",+a.dataset.i<removed);
-  });
-  document.getElementById("btnRemove").disabled=removed>=7;
-  document.getElementById("btnRemove").style.opacity=removed>=7?".4":"1";
+let hybType="sp3";
+function renderHybInfo(){
+  const h=HYB_INFO[hybType];
+  document.getElementById("hybInfo").innerHTML=`
+    <h3>${h.t}</h3>
+    <div class="hyb-facts">
+      <div class="fact"><span class="lbl">Геометрия</span><b>${h.geo}</b></div>
+      <div class="fact"><span class="lbl">Угол между связями</span><b>${h.ang}</b></div>
+      <div class="fact"><span class="lbl">Связи углерода</span><b>${h.bonds}</b></div>
+      <div class="fact"><span class="lbl">Молекула-пример</span><b>${h.mol}</b></div>
+    </div>
+    <p>${h.d}</p>
+    <p style="margin-top:10px"><b>Где встречается:</b> ${h.ex}</p>`;
 }
-document.getElementById("btnRemove").addEventListener("click",()=>{if(removed<7){removed++;updateOxi();}});
-document.getElementById("btnReset").addEventListener("click",()=>{removed=0;updateOxi();});
-updateOxi();
+document.querySelectorAll(".hyb-tabs button").forEach(b=>{
+  b.addEventListener("click",()=>{
+    document.querySelectorAll(".hyb-tabs button").forEach(x=>x.setAttribute("aria-pressed","false"));
+    b.setAttribute("aria-pressed","true");
+    hybType=b.dataset.h;
+    renderHybInfo();
+    document.dispatchEvent(new Event("hybchange"));
+  });
+});
+renderHybInfo();
+window.HYB={get type(){return hybType}};
+
+/* ================= ЛАБОРАТОРИЯ: разбираем любой элемент ================= */
+const ORB_COUNT={s:1,p:3,d:5,f:7};
+const LPRIO={s:0,p:1,d:2,f:3};
+const prio=ss=>+ss[0]*4+LPRIO[ss[1]]; // порядок отрыва: выше уровень и подуровень — раньше уходит
+const LAB_SET=[
+  /* 3d-ряд */
+  {z:21,states:[3],main:3,ox:{3:"Sc₂O₃ — белом тугоплавком оксиде."}},
+  {z:22,states:[2,3,4],main:4,ox:{2:"TiO.",3:"Ti₂O₃.",4:"TiO₂ — белоснежном пигменте красок."}},
+  {z:23,states:[2,3,4,5],main:5,ox:{2:"VO.",3:"V₂O₃.",4:"VO₂.",5:"V₂O₅ — катализаторе производства серной кислоты."}},
+  {z:24,states:[2,3,6],main:3,ox:{2:"CrO.",3:"Cr₂O₃ — зелёном пигменте.",6:"оранжевом дихромате K₂Cr₂O₇."}},
+  {z:25,states:[2,3,4,6,7],main:2,info:{
+    0:["Нейтральный атом марганца — как в чистом металле Mn.","Электроны 4s расположены дальше от ядра — их отрывать легче всего."],
+    1:["Mn⁺ — в химии почти не встречается.","Атом «на полпути»: одному 4s-электрону одиноко, состояние неустойчивое."],
+    2:["Mn²⁺ — как в MnCl₂ (бледно-розовые растворы).","<b>Оба 4s ушли, осталось ровно d⁵ — по одному электрону на каждой d-орбитали. Половинная заполненность = суперустойчивость!</b>"],
+    3:["Mn³⁺ — как в оксиде Mn₂O₃.","Начали отрывать d-электроны. Это труднее: нужен сильный окислитель."],
+    4:["Mn⁴⁺ — как в MnO₂, чёрной «начинке» батареек.","Каждый следующий электрон держится крепче: ион уже заряжен и не хочет отдавать ещё."],
+    5:["Mn⁵⁺ — редкий гость (манганаты(V), синие).","Промежуточные степени часто неустойчивы и распадаются на соседние."],
+    6:["Mn⁶⁺ — как в зелёном манганате K₂MnO₄.","Остался один d-электрон. Такое возможно только рядом с кислородом — чемпионом по оттягиванию электронов."],
+    7:["Mn⁷⁺ — как в фиолетовой «марганцовке» KMnO₄!","<b>Все 7 валентных электронов (2 с 4s + 5 с 3d) отданы. Высшая степень = номер группы. Дальше некуда: глубже лежит прочный остов аргона.</b>"]
+  }},
+  {z:26,states:[2,3,6],main:3,ox:{2:"FeO и железном купоросе FeSO₄.",3:"Fe₂O₃ — обычной ржавчине.",6:"редких ферратах K₂FeO₄."}},
+  {z:27,states:[2,3],main:2,ox:{2:"CoCl₂ — розовых растворах.",3:"Co₂O₃."}},
+  {z:28,states:[2,3],main:2,ox:{2:"NiSO₄ — изумрудных растворах.",3:"Ni₂O₃."}},
+  {z:29,states:[1,2],main:2,ox:{1:"красном оксиде Cu₂O.",2:"голубом медном купоросе CuSO₄."}},
+  {z:30,states:[2],main:2,ox:{2:"белом оксиде ZnO."}},
+  /* 4d-ряд */
+  {z:39,states:[3],main:3,ox:{3:"Y₂O₃."}},
+  {z:40,states:[4],main:4,ox:{4:"ZrO₂ — «кубическом цирконии» из украшений."}},
+  {z:41,states:[3,5],main:5,ox:{5:"Nb₂O₅."}},
+  {z:42,states:[2,3,4,5,6],main:6,ox:{4:"MoO₂.",6:"MoO₃."}},
+  {z:43,states:[4,7],main:7,ox:{4:"TcO₂.",7:"Tc₂O₇ (технеций радиоактивен)."}},
+  {z:44,states:[2,3,4,6,8],main:3,ox:{3:"RuCl₃.",4:"RuO₂.",8:"RuO₄ — рекордные +8 во всей таблице!"}},
+  {z:45,states:[1,2,3,4],main:3,ox:{3:"Rh₂O₃."}},
+  {z:46,states:[2,4],main:2,ox:{2:"PdCl₂."}},
+  {z:47,states:[1,2],main:1,ox:{1:"ляписе AgNO₃.",2:"экзотическом AgF₂."}},
+  {z:48,states:[2],main:2,ox:{2:"жёлтом пигменте CdS."}},
+  /* p-элементы */
+  {z:7,states:[1,2,3,4,5],main:5,note:"Азот чаще ПРИНИМАЕТ электроны (−3 в аммиаке NH₃), но рядом с кислородом отдаёт свои.",
+    ox:{1:"«веселящем газе» N₂O.",2:"NO.",3:"N₂O₃ и азотистой кислоте.",4:"буром газе NO₂.",5:"азотной кислоте HNO₃."}},
+  {z:13,states:[3],main:3,ox:{3:"Al₂O₃ — корунде, сапфире и рубине."}},
+  {z:16,states:[4,6],main:6,note:"С металлами сера наоборот принимает электроны: −2 в сульфидах.",
+    ox:{4:"вулканическом газе SO₂.",6:"серной кислоте H₂SO₄."}},
+  {z:17,states:[1,3,5,7],main:7,note:"Типичнее всего для хлора −1 (как в NaCl): принять электрон ему проще, чем отдать.",
+    ox:{1:"хлорке HClO.",3:"HClO₂.",5:"бертолетовой соли KClO₃.",7:"HClO₄ — одной из сильнейших кислот."}},
+  {z:50,states:[2,4],main:4,ox:{2:"SnCl₂.",4:"SnO₂ — оловянном камне."}},
+  {z:82,states:[2,4],main:2,ox:{2:"PbO и свинцовом блеске PbS.",4:"PbO₂ — «плюсе» автомобильного аккумулятора."}}
+];
+const LAB_BY_Z=Object.fromEntries(LAB_SET.map(e=>[e.z,e]));
+
+function valenceOf(z){
+  let coreZ=0;
+  for(const[nz]of NOBLE){if(z>nz){coreZ=nz;break;}}
+  const coreOrbs=new Map(config(coreZ));
+  let val=config(z).map(([o,n])=>[o,n-(coreOrbs.get(o)||0)]).filter(([,n])=>n>0);
+  if(blockOf(z)==="p") val=val.filter(([o,n])=>!(o[1]==="d"&&n===10)&&!(o[1]==="f"&&n===14));
+  return val;
+}
+
+const orbBoxes=document.getElementById("orbBoxes");
+const BLK_VAR={s:"var(--s)",p:"var(--p)",d:"var(--d)",f:"var(--f)"};
+let lab=null;
+
+function buildLab(z){
+  const meta=LAB_BY_Z[z];
+  const val=valenceOf(z);
+  const order=[...val].sort((a,b)=>prio(b[0])-prio(a[0]));
+  let idx=0;
+  const arrows={},subEl={},removeSeq=[];
+  for(const[ss,cnt]of order){
+    const nb=ORB_COUNT[ss[1]];
+    const ups=Math.min(cnt,nb),dns=cnt-ups;
+    const a=[];for(let b=0;b<nb;b++)a.push({});
+    /* отрыв: сначала спаренные (нижние стрелки) справа налево, потом одиночные */
+    for(let b=dns-1;b>=0;b--){a[b].dn=idx;removeSeq[idx]=ss;idx++;}
+    for(let b=ups-1;b>=0;b--){a[b].up=idx;removeSeq[idx]=ss;idx++;}
+    arrows[ss]=a;subEl[ss]=cnt;
+  }
+  lab={z,meta,val,removed:0,total:idx,max:Math.max(...meta.states),removeSeq,subEl};
+  document.getElementById("labName").textContent=EL[z].name.toLowerCase();
+  const seq=order.map(([o])=>o);
+  document.getElementById("labIntro").innerHTML=
+    `${EL[z].sym}: ${confHTML(z)}. Нажимай «Оторвать электрон» — сначала уходят электроны с ${seq[0]}${seq.slice(1).map(o=>", потом с "+o).join("")}.`;
+  orbBoxes.innerHTML=val.map(([ss])=>{
+    const boxes=arrows[ss].map(b=>{
+      let inner="";
+      if("up" in b)inner+=`<span class="arrow-e up" data-i="${b.up}"></span>`;
+      if("dn" in b)inner+=`<span class="arrow-e dn" data-i="${b.dn}"></span>`;
+      return `<div class="box ${ss[1]}">${inner}</div>`;
+    }).join("");
+    return `<div class="orb-set"><div class="set-lbl" style="color:${BLK_VAR[ss[1]]}">${ss}</div><div class="boxes">${boxes}</div></div>`;
+  }).join("");
+  updateOxi();
+  document.dispatchEvent(new Event("labchange"));
+}
+
+function labFades(){
+  const f={};
+  for(const ss in lab.subEl){
+    let rem=0;
+    for(let i=lab.removed;i<lab.total;i++)if(lab.removeSeq[i]===ss)rem++;
+    f[ss]=lab.subEl[ss]?rem/lab.subEl[ss]:1;
+  }
+  return f;
+}
+window.LAB={valList:()=>lab.val.map(([o])=>o),fades:labFades};
+
+function updateOxi(){
+  const meta=lab.meta,r=lab.removed,sym=EL[lab.z].sym;
+  document.getElementById("oxState").textContent=r===0?"0":"+"+r;
+  let comp,msg;
+  if(meta.info&&meta.info[r]){[comp,msg]=meta.info[r];}
+  else if(r===0){
+    comp=`Нейтральный атом — как в простом веществе ${sym}.`;
+    msg=meta.note||`Первыми уходят электроны с ${lab.removeSeq[0]} — они дальше всех от ядра.`;
+  }else{
+    const chg=(r>1?sup(r):"")+"⁺";
+    const known=meta.ox&&meta.ox[r];
+    if(known)comp=`${sym}${chg} — как в ${known}`;
+    else if(meta.states.includes(r))comp=`${sym}${chg} — реальная степень окисления ${sym}.`;
+    else comp=`${sym}${chg} — в устойчивых соединениях почти не встречается.`;
+    const from=lab.removeSeq[r-1],next=lab.removeSeq[r],parts=[];
+    if(r===meta.main)parts.push(`<b>⭐ Самая типичная степень для ${sym}!</b>`);
+    if(!meta.states.includes(r))parts.push("Промежуточное состояние — обычно неустойчиво и переходит в соседнее.");
+    if(r>=lab.max){
+      parts.push(r>=lab.total
+        ?`<b>Все ${r} валентных электронов отданы. Глубже — прочный остов благородного газа.</b>`
+        :`<b>Это потолок для ${sym}: остальные электроны держатся слишком крепко.</b>`);
+    }else if(next){
+      parts.push(`Ушёл электрон с ${from}.`+(next!==from
+        ?` Следующий — с ${next}: он ближе к ядру, отрывать труднее.`
+        :` Каждый следующий держится крепче: ион уже заряжен.`));
+    }
+    msg=parts.join(" ");
+  }
+  document.getElementById("oxCompound").innerHTML=comp;
+  document.getElementById("oxMsg").innerHTML=msg;
+  document.querySelectorAll("#orbBoxes .arrow-e").forEach(a=>a.classList.toggle("gone",+a.dataset.i<r));
+  const btn=document.getElementById("btnRemove");
+  btn.disabled=r>=lab.max;
+  btn.style.opacity=r>=lab.max?".4":"1";
+  document.dispatchEvent(new Event("labfade"));
+}
+
+/* селектор элемента */
+const labSelect=document.getElementById("labSelect");
+{
+  const groups=[["3d-ряд (период 4)",z=>z>=21&&z<=30],["4d-ряд (период 5)",z=>z>=39&&z<=48],["p-элементы",()=>true]];
+  const used=new Set();
+  for(const[lbl,test]of groups){
+    const og=document.createElement("optgroup");og.label=lbl;
+    LAB_SET.filter(e=>!used.has(e.z)&&test(e.z)).forEach(e=>{
+      used.add(e.z);
+      const o=document.createElement("option");
+      o.value=e.z;o.textContent=`${EL[e.z].sym} — ${EL[e.z].name}`;
+      og.appendChild(o);
+    });
+    labSelect.appendChild(og);
+  }
+}
+labSelect.value="25";
+labSelect.addEventListener("change",()=>buildLab(+labSelect.value));
+document.getElementById("btnRemove").addEventListener("click",()=>{if(lab.removed<lab.max){lab.removed++;updateOxi();}});
+document.getElementById("btnReset").addEventListener("click",()=>{lab.removed=0;updateOxi();});
+buildLab(25);
 
 /* ================= ТОЧЕЧНАЯ КАРТА СТЕПЕНЕЙ ================= */
 const OXMAP=[
@@ -728,6 +1026,255 @@ chart.innerHTML=html;
     requestAnimationFrame(loop);
   }
   loop();
+
+  /* ============ ОБОБЩЁННЫЕ ОРБИТАЛИ: s, p, d, f — все ориентации ============ */
+  const LVAL={s:0,p:1,d:2,f:3};
+  // угловые части (вещественные комбинации, без нормировки — важна форма)
+  const ANG={
+    s:[()=>1],
+    p:[p=>p.x,p=>p.y,p=>p.z],
+    d:[p=>p.x*p.y,p=>p.y*p.z,p=>p.x*p.z,p=>p.x*p.x-p.y*p.y,p=>(2*p.z*p.z-p.x*p.x-p.y*p.y)/1.73],
+    f:[p=>p.z*(2*p.z*p.z-3*p.x*p.x-3*p.y*p.y),
+       p=>p.x*(4*p.z*p.z-p.x*p.x-p.y*p.y),
+       p=>p.y*(4*p.z*p.z-p.x*p.x-p.y*p.y),
+       p=>p.x*p.y*p.z,
+       p=>p.z*(p.x*p.x-p.y*p.y),
+       p=>p.x*(p.x*p.x-3*p.y*p.y),
+       p=>p.y*(3*p.x*p.x-p.y*p.y)]
+  };
+  // свой цвет каждой подоболочке (по порядку заполнения)
+  const SS_COLORS=["#5eb8ff","#ff7eb6","#ffc24d","#41e0a8","#b18cff","#ff8f70","#4dd6e8","#ffa3e0","#8ee85e","#e879f9","#ffd166","#2dd4bf","#c084fc","#ff9db4","#93c5fd","#fca5a5","#86efac","#fcd34d","#67e8f9"];
+  const ssColor=ss=>SS_COLORS[AUFBAU.findIndex(a=>a[0]===ss)]||"#ffffff";
+
+  function cloudGeo(spec,N){
+    const{pts,cols}=sampleCloud(spec,N);
+    const g=new THREE.BufferGeometry();
+    g.setAttribute("position",new THREE.BufferAttribute(pts,3));
+    g.setAttribute("color",new THREE.BufferAttribute(cols,3));
+    return g;
+  }
+  function cloudMat(size,opacity){
+    return new THREE.PointsMaterial({size,vertexColors:true,transparent:true,opacity:opacity??0.9,
+      sizeAttenuation:true,depthWrite:false,blending:THREE.AdditiveBlending});
+  }
+
+  // кэш облаков: геометрии зависят только от подоболочки — считаем один раз
+  const CLOUDCACHE={};
+  function subshellGeos(ss){
+    if(CLOUDCACHE[ss])return CLOUDCACHE[ss];
+    const n=+ss[0],l=ss[1],R=4.2*n+2.3*LVAL[l],col=ssColor(ss);
+    const decay=0.55*n+0.45;
+    const geos=ANG[l].map(ang=>cloudGeo({f:p=>ang(p)*Math.exp(-Math.hypot(p.x,p.y,p.z)/decay),R,cPos:col,cNeg:col},1100));
+    return CLOUDCACHE[ss]={geos,R};
+  }
+
+  /* ---- вьюер атома: все орбитали в одной сцене + подсветка ---- */
+  function makeAtomViewer(canvas){
+    const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+    const scene=new THREE.Scene();
+    const cam=new THREE.PerspectiveCamera(42,1,0.1,900);
+    const group=new THREE.Group();group.rotation.x=0.45;scene.add(group);
+    const nuc=new THREE.Mesh(new THREE.SphereGeometry(1,16,16),new THREE.MeshBasicMaterial({color:0xffffff}));
+    group.add(nuc);
+    const mats={},fades={};let hl=null,R=10;
+    const v={renderer,scene,cam,group,canvas,drag:false,px:0,py:0};
+    canvas.addEventListener("pointerdown",e=>{v.drag=true;v.px=e.clientX;v.py=e.clientY;canvas.setPointerCapture(e.pointerId);});
+    canvas.addEventListener("pointermove",e=>{
+      if(!v.drag)return;
+      group.rotation.y+=(e.clientX-v.px)*0.008;
+      group.rotation.x+=(e.clientY-v.py)*0.008;
+      v.px=e.clientX;v.py=e.clientY;
+    });
+    canvas.addEventListener("pointerup",()=>v.drag=false);
+    canvas.addEventListener("pointercancel",()=>v.drag=false);
+    function apply(){
+      for(const k in mats){
+        const sel=hl===null?0.85:(k===hl?1:0.05);
+        mats[k].opacity=sel*(fades[k]??1);
+        mats[k].size=R*(hl===k?0.03:0.02);
+      }
+    }
+    function setSubshells(list){
+      [...group.children].forEach(c=>{if(c.isPoints)group.remove(c);});
+      for(const k in mats){mats[k].dispose();delete mats[k];delete fades[k];}
+      hl=null;R=0;
+      list.forEach(ss=>{
+        const{geos,R:r}=subshellGeos(ss);
+        R=Math.max(R,r);
+        const mat=cloudMat(1,0.85);
+        mats[ss]=mat;
+        geos.forEach(g=>group.add(new THREE.Points(g,mat)));
+      });
+      R=Math.max(R,6);
+      nuc.scale.setScalar(R*0.028);
+      cam.position.set(0,0,R*2.5);
+      apply();resize();
+    }
+    function highlight(ss){hl=ss;apply();}
+    function setFade(ss,f){fades[ss]=Math.max(f,0.05);apply();}
+    function resize(){
+      const w=canvas.clientWidth||280;
+      renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+      renderer.setSize(w,w,false);
+      cam.aspect=1;cam.updateProjectionMatrix();
+    }
+    addEventListener("resize",resize);
+    viewers.push(v);io.observe(canvas);
+    return{setSubshells,highlight,setFade,resize,get hl(){return hl}};
+  }
+
+  /* ---- 3D-режим в модалке элемента ---- */
+  let modalViewer=null;
+  function showAtom(z){
+    const canvas=document.getElementById("atomOrb");
+    if(!canvas)return;
+    if(!modalViewer)modalViewer=makeAtomViewer(canvas);
+    const conf=config(z);
+    modalViewer.setSubshells(conf.map(c=>c[0]));
+    buildSSMenu(conf);
+    requestAnimationFrame(()=>modalViewer.resize());
+  }
+  function buildSSMenu(conf){
+    const wrap=document.getElementById("mSubshells");
+    wrap.innerHTML="";
+    const btns=[];
+    const mk=(label,ss,col)=>{
+      const b=document.createElement("button");
+      b.className="ss-btn";b.type="button";
+      b.innerHTML=(col?`<i style="background:${col}"></i>`:"")+label;
+      b.addEventListener("click",()=>{
+        const tgt=(ss&&modalViewer.hl!==ss)?ss:null;
+        modalViewer.highlight(tgt);
+        btns.forEach(x=>x.classList.toggle("active",x===(tgt===null?btns[0]:b)));
+      });
+      wrap.appendChild(b);btns.push(b);
+      return b;
+    };
+    mk("все",null).classList.add("active");
+    conf.forEach(([ss,n])=>mk(ss+sup(n),ss,ssColor(ss)));
+  }
+  window.ORB3D={showAtom};
+
+  /* ---- 3D валентных орбиталей в лаборатории ---- */
+  let labViewer=null;
+  function syncLab(){
+    if(!window.LAB)return;
+    const canvas=document.getElementById("labOrb");
+    if(!canvas)return;
+    if(!labViewer)labViewer=makeAtomViewer(canvas);
+    labViewer.setSubshells(window.LAB.valList());
+    syncLabFade();
+  }
+  function syncLabFade(){
+    if(!labViewer||!window.LAB)return;
+    const f=window.LAB.fades();
+    for(const ss in f)labViewer.setFade(ss,f[ss]);
+  }
+  document.addEventListener("labchange",syncLab);
+  document.addEventListener("labfade",syncLabFade);
+  syncLab();
+
+  /* ============ ГИБРИДИЗАЦИЯ УГЛЕРОДА: 3D ============ */
+  (function(){
+    const canvas=document.getElementById("hybCanvas");
+    if(!canvas)return;
+    const renderer=new THREE.WebGLRenderer({canvas,antialias:true,alpha:true});
+    const scene=new THREE.Scene();
+    const cam=new THREE.PerspectiveCamera(42,1,0.1,400);
+    const root=new THREE.Group();root.rotation.x=0.4;scene.add(root);
+    const v={renderer,scene,cam,group:root,canvas,drag:false,px:0,py:0};
+    canvas.addEventListener("pointerdown",e=>{v.drag=true;v.px=e.clientX;v.py=e.clientY;canvas.setPointerCapture(e.pointerId);});
+    canvas.addEventListener("pointermove",e=>{
+      if(!v.drag)return;
+      root.rotation.y+=(e.clientX-v.px)*0.008;
+      root.rotation.x+=(e.clientY-v.py)*0.008;
+      v.px=e.clientX;v.py=e.clientY;
+    });
+    canvas.addEventListener("pointerup",()=>v.drag=false);
+    canvas.addEventListener("pointercancel",()=>v.drag=false);
+    function resize(){
+      const w=canvas.clientWidth||280;
+      renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));
+      renderer.setSize(w,w,false);
+      cam.aspect=1;cam.updateProjectionMatrix();
+    }
+    resize();addEventListener("resize",resize);
+    viewers.push(v);io.observe(canvas);
+
+    // гибридный «лепесток» вдоль +z и негибридная p-гантель
+    const lobeGeo=cloudGeo({f:p=>(1+1.3*p.z)*Math.exp(-Math.hypot(p.x,p.y,p.z)/2.2),R:9,cPos:"#b18cff",cNeg:"#b18cff"},1600);
+    const pGeo=cloudGeo({f:p=>p.z*Math.exp(-Math.hypot(p.x,p.y,p.z)/2),R:10,cPos:"#41e0a8",cNeg:"#41e0a8"},1300);
+    const V3=(x,y,z)=>new THREE.Vector3(x,y,z);
+    const ZAXIS=V3(0,0,1);
+    function lobe(dir,geo,size){
+      const pt=new THREE.Points(geo,cloudMat(size,0.9));
+      pt.quaternion.setFromUnitVectors(ZAXIS,V3(...dir).normalize());
+      return pt;
+    }
+    function ball(r,color,pos){
+      const m=new THREE.Mesh(new THREE.SphereGeometry(r,20,20),new THREE.MeshBasicMaterial({color}));
+      m.position.copy(pos);return m;
+    }
+    function bond(a,b){
+      const d=b.clone().sub(a),len=d.length();
+      const m=new THREE.Mesh(new THREE.CylinderGeometry(0.3,0.3,len,10),
+        new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.28}));
+      m.position.copy(a).add(d.clone().multiplyScalar(0.5));
+      m.quaternion.setFromUnitVectors(V3(0,1,0),d.normalize());
+      return m;
+    }
+    function carbonSite(pos,lobeDirs,freeDirs){
+      const g=new THREE.Group();g.position.copy(pos);
+      g.add(ball(1.5,0xf5f5ff,V3(0,0,0)));
+      lobeDirs.forEach(d=>g.add(lobe(d,lobeGeo,0.26)));
+      freeDirs.forEach(d=>g.add(lobe(d,pGeo,0.24)));
+      return g;
+    }
+    const HL=10.2,T=1/Math.sqrt(3);
+    function addH(g,center,dir){
+      const hp=center.clone().add(V3(...dir).multiplyScalar(HL));
+      g.add(ball(1.05,0x7dd3fc,hp));
+      g.add(bond(center,hp));
+    }
+    const MOLS={
+      sp3(){
+        const g=new THREE.Group(),c=V3(0,0,0);
+        const dirs=[[T,T,T],[T,-T,-T],[-T,T,-T],[-T,-T,T]];
+        g.add(carbonSite(c,dirs,[]));
+        dirs.forEach(d=>addH(g,c,d));
+        return g;
+      },
+      sp2(){
+        const g=new THREE.Group(),cx=5.4;
+        const L=V3(-cx,0,0),Rt=V3(cx,0,0);
+        g.add(carbonSite(L,[[1,0,0],[-0.5,0.866,0],[-0.5,-0.866,0]],[[0,0,1]]));
+        g.add(carbonSite(Rt,[[-1,0,0],[0.5,0.866,0],[0.5,-0.866,0]],[[0,0,1]]));
+        g.add(bond(L,Rt));
+        addH(g,L,[-0.5,0.866,0]);addH(g,L,[-0.5,-0.866,0]);
+        addH(g,Rt,[0.5,0.866,0]);addH(g,Rt,[0.5,-0.866,0]);
+        return g;
+      },
+      sp(){
+        const g=new THREE.Group(),cx=5;
+        const L=V3(-cx,0,0),Rt=V3(cx,0,0);
+        g.add(carbonSite(L,[[1,0,0],[-1,0,0]],[[0,1,0],[0,0,1]]));
+        g.add(carbonSite(Rt,[[-1,0,0],[1,0,0]],[[0,1,0],[0,0,1]]));
+        g.add(bond(L,Rt));
+        addH(g,L,[-1,0,0]);addH(g,Rt,[1,0,0]);
+        return g;
+      }
+    };
+    const CAMD={sp3:36,sp2:48,sp:50};
+    const built={};
+    function showHyb(){
+      const t=window.HYB?window.HYB.type:"sp3";
+      if(!built[t]&&MOLS[t]){built[t]=MOLS[t]();root.add(built[t]);}
+      for(const k in built)built[k].visible=k===t;
+      cam.position.set(0,0,CAMD[t]||44);
+    }
+    document.addEventListener("hybchange",showHyb);
+    showHyb();
+  })();
 })();
 </script>
 </body>
